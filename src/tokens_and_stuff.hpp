@@ -23,41 +23,50 @@
 
 #include "misc_includes.hpp"
 
-#define LIST_OF_TOKENS(VARNAME, VAL) \
-\
+
+#define LIST_OF_IDENT_LIKE_TOKENS(VARNAME, VALUE) \
 /* "block" */ \
-VARNAME(Block) VAL("block") \
-\
+VARNAME(Block) VALUE("block") \
 \
 /* "sprite" */ \
-VARNAME(Sprite) VAL("sprite") \
+VARNAME(Sprite) VALUE("sprite") \
 \
 /* "set_name" */ \
-VARNAME(SetName) VAL("set_name") \
+VARNAME(SetName) VALUE("set_name") \
 \
 /* "const" */ \
-VARNAME(Const) VAL("const") \
-\
+VARNAME(Const) VALUE("const") \
+
+
+#define LIST_OF_PUNCT_TOKENS(VARNAME, VALUE) \
 /* "(", ")" */ \
-VARNAME(LParen) VAL("(") \
-VARNAME(RParen) VAL(")") \
+VARNAME(LParen) VALUE("(") \
+VARNAME(RParen) VALUE(")") \
 \
 /* "{", "}" */ \
-VARNAME(LBrace) VAL("{") \
-VARNAME(RBrace) VAL("}") \
+VARNAME(LBrace) VALUE("{") \
+VARNAME(RBrace) VALUE("}") \
 \
 /* "=", ";", "," */ \
-VARNAME(Equals) VAL("=") \
-VARNAME(Semicolon) VAL(";") \
-VARNAME(Comma) VAL(",") \
-\
-\
+VARNAME(Equals) VALUE("=") \
+VARNAME(Semicolon) VALUE(";") \
+VARNAME(Comma) VALUE(",") \
+
+
+#define LIST_OF_EXTRA_KEYWORD_TOKENS(VARNAME, VALUE) \
 /* "__keyword_number", "__keyword_ident" */ \
-VARNAME(Number) VAL("__keyword_number") \
-VARNAME(Ident) VAL("__keyword_ident") \
+VARNAME(Number) VALUE("__keyword_number") \
+VARNAME(Ident) VALUE("__keyword_ident") \
 \
 /* "__keyword_blank" */ \
-VARNAME(Blank) VAL("__keyword_blank")
+VARNAME(Blank) VALUE("__keyword_blank")
+
+
+
+#define LIST_OF_TOKENS(VARNAME, VALUE) \
+LIST_OF_IDENT_LIKE_TOKENS(VARNAME, VALUE) \
+LIST_OF_PUNCT_TOKENS(VARNAME, VALUE) \
+LIST_OF_EXTRA_KEYWORD_TOKENS(VARNAME, VALUE)
 
 
 

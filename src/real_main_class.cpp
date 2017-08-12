@@ -34,6 +34,11 @@ int RealMain::operator () ()
 
 void RealMain::advance()
 {
+	if (next_char() == EOF)
+	{
+		return;
+	}
+
 	set_next_char(getchar());
 
 	if (next_char() == '\n')
@@ -46,9 +51,25 @@ void RealMain::advance()
 
 void RealMain::lex()
 {
-	PTok ret = nullptr;
+	while (isspace(next_char()))
+	{
+		advance();
+	}
 
+	if (next_char() == EOF)
+	{
+		set_next_tok(&Tok::Blank);
+		return;
+	}
 
+	//switch (next_char())
+	//{
 
-	__next_tok = ret;
+	//}
+
+	//// An ident?
+	//else if (isalpha(next_char()) || (next_char() == '_'))
+	//{
+	//}
+
 }
