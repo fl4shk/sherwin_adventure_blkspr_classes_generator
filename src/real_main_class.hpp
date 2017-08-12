@@ -82,6 +82,10 @@ private:		// functions
 	{
 		err("Expected ", args...);
 	}
+	void expected(PTok tok) const
+	{
+		expected("token of type \"", tok->str(), "\"!");
+	}
 	void need(PTok tok);
 
 	void advance();

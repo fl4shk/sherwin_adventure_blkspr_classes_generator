@@ -54,12 +54,12 @@ VARNAME(Comma) VALUE(",") \
 
 
 #define LIST_OF_EXTRA_KEYWORD_TOKENS(VARNAME, VALUE) \
-/* "__keyword_number", "__keyword_ident" */ \
-VARNAME(Number) VALUE("__keyword_number") \
-VARNAME(Ident) VALUE("__keyword_ident") \
+/* "Number", "Identifier" */ \
+VARNAME(Number) VALUE("Number") \
+VARNAME(Ident) VALUE("Identifier") \
 \
-/* "__keyword_blank" */ \
-VARNAME(Blank) VALUE("__keyword_blank")
+/* "Blank" */ \
+VARNAME(Blank) VALUE("Blank")
 
 
 

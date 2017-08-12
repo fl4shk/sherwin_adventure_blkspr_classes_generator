@@ -41,12 +41,14 @@ void RealMain::need(PTok tok)
 {
 	if (next_tok() == tok)
 	{
+		printout("need(), before lex():  ", next_tok()->str(), "\n");
 		lex();
+		printout("need(), after lex():  ", next_tok()->str(), "\n");
 	}
 	else
 	{
 		printerr("need():  ");
-		expected("token of type \"", tok->str(), "\"!");
+		expected(tok);
 	}
 }
 
@@ -92,8 +94,8 @@ void RealMain::lex()
 	std::string next_str;
 	next_str += next_char();
 
-	//printout("lex() before if (next_str == \"\"):  next_char():  ", 
-	//	(char)next_char(), "\n");
+	//printout("lex() before if (next_str == \"\"):  next_str, ",
+	//	"next_char():  ", next_str, ", ", (char)next_char(), "\n");
 	if (next_str == "")
 	{
 	}
@@ -101,8 +103,19 @@ void RealMain::lex()
 	#define VARNAME(some_tok) \
 		else if (next_str == Tok::some_tok.str()) \
 		{ \
+			/*
+			if (next_tok() != nullptr) \
+			{ \
+				printout("lex():  Setting next_tok:  \"", \
+					next_tok()->str(), "\" \"", next_str, "\"\n"); \
+			}
+			*/ \
 			set_next_tok(&Tok::some_tok); \
 			advance(); \
+			/*
+			printout("lex() after punct:  next_char():  \"", \
+				(char)next_char(), "\"\n"); \
+			*/ \
 			return; \
 		}
 	#define VALUE(some_str)
@@ -112,10 +125,15 @@ void RealMain::lex()
 
 	#undef VARNAME
 
+	//printout("lex() before An ident?:  ", (char)next_char(), ", ", 
+	//	isalpha(next_char()), ", ", (next_char() == '_'), "\n");
+
 	// An ident?
-	else if (isalpha(next_char()) || (next_char() == '_'))
+	if (isalpha(next_char()) || (next_char() == '_'))
 	{
 		//printout("lex():  An ident?\n");
+		next_str = "";
+		next_str += next_char();
 		advance();
 
 		while (isalnum(next_char()) || (next_char() == '_'))
@@ -148,12 +166,14 @@ void RealMain::lex()
 		if (!sym_tbl().contains(next_str))
 		{
 			// ...Then create a new symbol
+			printout("Creating a new symbol....\n");
 			Symbol to_insert(next_str, &Tok::Ident);
 
 			sym_tbl().at(next_str) = to_insert;
 		}
 
 
+		set_next_tok(&Tok::Ident);
 		set_next_sym_str(next_str);
 
 		return;
@@ -255,15 +275,30 @@ void RealMain::handle_set_name(std::string& temp_name)
 {
 	set_found_set_name(true);
 
-	//printout("handle_set_name():  ", next_tok()->str(), "\n");
+	printout("handle_set_name():  ", next_tok()->str(), "\n");
 
 	lex();
-	//printout("handle_set_name():  ", next_tok()->str(), "\n");
+	printout("handle_set_name(), before need():  ", next_tok()->str(), 
+		"\n");
 
 	need(&Tok::LParen);
 
+	printout("handle_set_name(), after need():  ", next_tok()->str(), 
+		"\n");
+
+	if (next_tok() == &Tok::Ident)
+	{
+		printout("I found an identifier for set_name()!\n");
+		lex();
+	}
+	else
+	{
+		expected(&Tok::Ident);
+	}
+
 
 	need(&Tok::RParen);
+	printout("handle_set_name():  ", next_tok()->str(), "\n");
 	need(&Tok::Semicolon);
 
 }
