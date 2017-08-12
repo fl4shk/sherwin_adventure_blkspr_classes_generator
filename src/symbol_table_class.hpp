@@ -80,7 +80,6 @@ class SymbolTable
 {
 private:		// variables
 	std::map<std::string, Symbol> __table;
-	std::map<const Tok*, std::string> __tok_to_str_map;
 
 public:		// functions
 	SymbolTable();
@@ -95,17 +94,6 @@ public:		// functions
 	{
 		return __table.at(some_name);
 	}
-
-	inline Symbol& at(const Tok* some_token)
-	{
-		return __table[__tok_to_str_map.at(some_token)];
-	}
-
-	inline const Symbol& at(const Tok* some_token) const
-	{
-		return __table.at(__tok_to_str_map.at(some_token));
-	}
-
 
 	inline bool contains(const std::string& some_name) const
 	{

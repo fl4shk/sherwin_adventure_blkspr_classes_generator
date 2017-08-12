@@ -63,6 +63,8 @@ VARNAME(Blank) VAL("__keyword_blank")
 
 
 
+// Why is this class holding all the instances of itself?  Jeez.  It works
+// fine; don't get me wrong.  It's just a little weird.
 class Tok
 {
 private:		// variables

@@ -23,7 +23,9 @@
 // Hardcoded list of built-in symbols
 SymbolTable::SymbolTable()
 {
-	for (auto& iter : Tok::tok_vec)
+	for (size_t i=0; i<Tok::tok_vec.size(); ++i)
 	{
+		const Tok* temp = Tok::tok_vec.at(i);
+		__table[temp->str()] = Symbol(temp->str(), temp);
 	}
 }
