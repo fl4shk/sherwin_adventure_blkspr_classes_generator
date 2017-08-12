@@ -38,5 +38,5 @@ types_*.taghl
 */types_*.taghl
 makefile_temp
 *.txt.ignore
-block_classes_generator
-block_classes_generator_debug
+blkspr_classes_generator
+blkspr_classes_generator_debug
