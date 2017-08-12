@@ -132,8 +132,13 @@ VAR_NAME_MACRO(Blank) VALUE_MACRO("__keyword_blank")
 
 
 #define VAR_NAME_MACRO(some_tok) \
-	extern Tok some_tok;
+	extern const Tok some_tok;
 #define VALUE_MACRO(some_str) 
+
+LIST_OF_TOKENS(VAR_NAME_MACRO, VALUE_MACRO)
+
+#undef VAR_NAME_MACRO
+#undef VALUE_MACRO
 
 
 #endif		// tokens_and_stuff_hpp
