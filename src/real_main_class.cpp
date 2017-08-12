@@ -17,12 +17,14 @@
 // with Sherwin's Adventure Block and Sprite Classes Generator.  If not,
 // see <http://www.gnu.org/licenses/>.
 
-
 #include "real_main_class.hpp"
 
-int main(int argc, char** argv)
+
+RealMain::RealMain()
 {
-	RealMain real_main;
-	return real_main();
 }
 
+int RealMain::operator () ()
+{
+	return 0;
+}

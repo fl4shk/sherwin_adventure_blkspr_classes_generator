@@ -18,11 +18,25 @@
 // see <http://www.gnu.org/licenses/>.
 
 
-#include "real_main_class.hpp"
+#ifndef real_main_class_hpp
+#define real_main_class_hpp
 
-int main(int argc, char** argv)
+#include "misc_includes.hpp"
+
+
+#include "symbol_table_class.hpp"
+
+class RealMain
 {
-	RealMain real_main;
-	return real_main();
-}
+private:		// variables
+	
 
+public:		// functions
+	RealMain();
+
+	int operator () ();
+
+};
+
+
+#endif		// real_main_class_hpp
