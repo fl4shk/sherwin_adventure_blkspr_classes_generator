@@ -26,10 +26,27 @@
 
 #include "symbol_table_class.hpp"
 
+
+
 class RealMain
 {
+private:		// classes
+	class Block
+	{
+	public:		// variables
+		std::string name;
+	};
+
+	class Sprite
+	{
+	public:		// variables
+		std::string name;
+	};
+
 private:		// variables
 	SymbolTable __sym_tbl;
+	std::map<std::string, Block> __blk_map;
+	std::map<std::string, Sprite> __spr_map;
 
 	size_t __line_num = 1;
 
@@ -77,18 +94,21 @@ private:		// functions
 	void handle_block();
 	void handle_sprite();
 
-	void handle_shared();
-
+	void handle_set_name(std::string& temp_name);
 	bool next_tok_is_punct() const;
 
 
+
 	gen_getter_by_ref(sym_tbl)
+	gen_getter_by_ref(blk_map)
+	gen_getter_by_ref(spr_map)
 
 	gen_getter_by_val(line_num)
 	gen_getter_by_val(next_char)
 	gen_getter_by_val(next_tok)
 	gen_getter_by_con_ref(next_sym_str)
 	gen_getter_by_val(found_set_name)
+
 
 	gen_setter_by_val(line_num)
 	gen_setter_by_val(next_char)
