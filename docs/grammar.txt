@@ -1,4 +1,4 @@
-code = (block | sprite) .
+code = {(block | sprite)} .
 
 shared =
   name 
@@ -8,12 +8,18 @@ shared =
 
 # Will add more later
 block =
-  shared .
+  "block"
+  "{"
+  shared
+  "}" .
 
 
 # Will add more later
 sprite =
-  shared .
+  "sprite"
+  "{"
+  shared
+  "}" .
 
 
 name = "set_name" "(" string ")" ";" .
