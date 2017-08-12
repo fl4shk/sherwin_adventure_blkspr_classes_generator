@@ -17,16 +17,10 @@
 // with Sherwin's Adventure Block and Sprite Classes Generator.  If not,
 // see <http://www.gnu.org/licenses/>.
 
-
-#include "misc_includes.hpp"
-
-
 #include "symbol_table_class.hpp"
 
 
-
-int main(int argc, char** argv)
+// Hardcoded list of built-in symbols
+SymbolTable::SymbolTable()
 {
-	return 0;
 }
-

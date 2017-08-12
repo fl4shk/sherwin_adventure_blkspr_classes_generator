@@ -18,15 +18,46 @@
 // see <http://www.gnu.org/licenses/>.
 
 
-#include "misc_includes.hpp"
+#ifndef tokens_and_stuff_hpp
+#define tokens_and_stuff_hpp
 
 
-#include "symbol_table_class.hpp"
-
-
-
-int main(int argc, char** argv)
+enum class Tok : int
 {
-	return 0;
-}
+	// "block"
+	Block,
 
+
+	// "sprite"
+	Sprite,
+
+	// "set_name"
+	SetName,
+
+	// "const"
+	Const,
+
+	// "(", ")"
+	LParen,
+	RParen,
+
+	// "{", "}"
+	LBrace,
+	RBrace,
+
+	// "=", ";", ","
+	Equals,
+	Semicolon,
+	Comma,
+
+
+	// These don't really need string equivalents
+	Number,
+	Ident,
+
+
+	// 
+	Blank = -1,
+};
+
+#endif		// tokens_and_stuff_hpp
