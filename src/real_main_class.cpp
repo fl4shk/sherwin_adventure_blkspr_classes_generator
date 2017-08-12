@@ -123,16 +123,21 @@ void RealMain::lex()
 
 void RealMain::parse()
 {
-	const bool at_start = __at_start;
-	__at_start = false;
-
-
 	lex();
 
-	if (at_start)
+	if (next_tok() == &Tok::Block)
 	{
+		printout("I found a \"block\" token!\n");
+	}
 
-		return;
+	else if (next_tok() == &Tok::Sprite)
+	{
+		printout("I found a \"sprite\" token!\n");
+	}
+
+	else
+	{
+		expected("token of type \"block\" or \"sprite\"!");
 	}
 	
 }

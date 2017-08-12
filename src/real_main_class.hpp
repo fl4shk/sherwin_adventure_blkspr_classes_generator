@@ -37,9 +37,6 @@ private:		// variables
 	PTok __next_tok = nullptr;
 	std::string __next_sym_str;
 
-	bool __at_start = true;
-	bool __in_block = false, __in_sprite = false;
-
 public:		// functions
 	RealMain();
 
