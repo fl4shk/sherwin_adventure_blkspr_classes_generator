@@ -26,8 +26,6 @@ RealMain::RealMain()
 
 int RealMain::operator () ()
 {
-	lex();
-
 	while (next_char() != EOF)
 	{
 		parse();
@@ -125,4 +123,16 @@ void RealMain::lex()
 
 void RealMain::parse()
 {
+	const bool at_start = __at_start;
+	__at_start = false;
+
+
+	lex();
+
+	if (at_start)
+	{
+
+		return;
+	}
+	
 }

@@ -37,6 +37,9 @@ private:		// variables
 	PTok __next_tok = nullptr;
 	std::string __next_sym_str;
 
+	bool __at_start = true;
+	bool __in_block = false, __in_sprite = false;
+
 public:		// functions
 	RealMain();
 
@@ -57,9 +60,14 @@ private:		// functions
 		err_suffix("Error", args...);
 	}
 
-	inline void expected(PTok tok) const
+	template<typename... ArgTypes>
+	void expected(ArgTypes&&... args) const
 	{
-		err("Expected token of type \"", tok->str(), "\"!");
+		err("Expected ", args...);
+	}
+	void expected(PTok tok) const
+	{
+		expected("token of type \"", tok->str(), "\"!");
 	}
 
 	void advance();
@@ -67,6 +75,10 @@ private:		// functions
 	void lex();
 
 	void parse();
+
+
+	void handle_block();
+	void handle_sprite();
 
 
 	gen_getter_by_ref(sym_tbl)
