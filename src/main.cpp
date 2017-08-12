@@ -23,6 +23,7 @@
 
 enum class Tok : int
 {
+
 	// "block"
 	Block,
 
@@ -53,24 +54,72 @@ enum class Tok : int
 	Number,
 	Ident,
 
+
+	// 
+	Blank = -1,
 };
 
+// Temporarily make this a global variable
+Tok next_tok;
 
 class Symbol
 {
-public:		// variables
-	int value = -1;
+private:		// variables
+	std::string __name;
+	Tok __token;
 
 public:		// functions
 	inline Symbol()
 	{
 	}
-	inline Symbol(int s_value) : value(s_value)
+	inline Symbol(const std::string& s_name, Tok s_token) : __name(s_name),
+		__token(s_token)
 	{
 	}
 
+	gen_getter_by_con_ref(name)
+	gen_getter_by_val(token)
+
+	gen_setter_by_con_ref(name)
+	gen_setter_by_rval_ref(name)
+	gen_setter_by_val(token)
+
 };
 
+class SymbolTable
+{
+private:		// variables
+	std::map<std::string, Symbol> __table;
+	std::map<Tok, std::string> __tok_to_str_map;
+
+public:		// functions
+	SymbolTable();
+
+	inline Symbol& at(const std::string& some_name)
+	{
+		return __table[some_name];
+	}
+
+	inline const Symbol& at(const std::string& some_name) const
+	{
+		return __table.at(some_name);
+	}
+
+	inline bool contains(const std::string& some_name) const
+	{
+		return (__table.count(some_name) == 1);
+	}
+
+
+private:		// functions
+
+
+};
+
+// Hardcoded list of built-in symbols
+SymbolTable::SymbolTable()
+{
+}
 
 
 int main(int argc, char** argv)

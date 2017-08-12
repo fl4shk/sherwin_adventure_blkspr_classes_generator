@@ -22,6 +22,7 @@
 #define misc_includes_hpp
 
 #include <fstream>
+#include <map>
 
 
 #include "liborangepower_src/gen_getter_setter_defines.hpp"
