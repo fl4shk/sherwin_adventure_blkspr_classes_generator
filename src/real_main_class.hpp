@@ -56,18 +56,16 @@ private:		// functions
 	template<typename... ArgTypes>
 	void err(ArgTypes&&... args) const
 	{
-		err_suffix("Error", args...);
+		printerr("Error");
+		err_suffix(args...);
 	}
 
 	template<typename... ArgTypes>
 	void expected(ArgTypes&&... args) const
 	{
-		err("Expected ", args...);
+		err_suffix("Expected ", args...);
 	}
-	void expected(PTok tok) const
-	{
-		expected("token of type \"", tok->str(), "\"!");
-	}
+	void need(PTok tok);
 
 	void advance();
 
@@ -80,6 +78,8 @@ private:		// functions
 	void handle_sprite();
 
 	void handle_shared();
+
+	bool next_tok_is_punct() const;
 
 
 	gen_getter_by_ref(sym_tbl)

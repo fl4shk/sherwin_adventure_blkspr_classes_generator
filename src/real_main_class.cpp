@@ -35,6 +35,17 @@ int RealMain::operator () ()
 	return 0;
 }
 
+void RealMain::need(PTok tok)
+{
+	if (next_tok() == tok)
+	{
+		lex();
+	}
+	else
+	{
+		expected("token of type \"", tok->str(), "\"!");
+	}
+}
 
 void RealMain::advance()
 {
@@ -157,59 +168,64 @@ void RealMain::handle_block()
 {
 	set_found_set_name(false);
 
-	lex();
-
-	if (next_tok() != &Tok::LBrace)
-	{
-		expected(&Tok::LBrace);
-	}
-
+	need(&Tok::LBrace);
 
 	handle_shared();
 
-
-	lex();
+	need(&Tok::RBrace);
 	
-	if (next_tok() != &Tok::RBrace)
-	{
-		expected(&Tok::RBrace);
-	}
-
-	if (found_set_name())
-	{
-		expected("an instance of \"set_name\"");
-	}
+	//if (found_set_name())
+	//{
+	//	expected("an instance of \"set_name\"");
+	//}
 }
 
 void RealMain::handle_sprite()
 {
 	set_found_set_name(false);
 
-	lex();
-
-	if (next_tok() != &Tok::LBrace)
-	{
-		expected(&Tok::LBrace);
-	}
-
+	need(&Tok::LBrace);
 
 	handle_shared();
 
-
-	lex();
+	need(&Tok::RBrace);
 	
-	if (next_tok() != &Tok::RBrace)
-	{
-		expected(&Tok::RBrace);
-	}
-
-	if (found_set_name())
-	{
-		expected("an instance of \"set_name\"");
-	}
+	//if (found_set_name())
+	//{
+	//	expected("an instance of \"set_name\"");
+	//}
 }
 
 void RealMain::handle_shared()
 {
+	//if (next_tok_is_punct())
+	//{
+	//	return;
+	//}
+
+	printout("handle_shared():  I found this type of token:  ",
+		next_tok()->str(), "\n");
+}
+
+
+bool RealMain::next_tok_is_punct() const
+{
+	if (next_tok() == nullptr)
+	{
+	}
 	
+	#define VARNAME(some_tok) \
+		else if (next_tok() == &Tok::some_tok) \
+		{ \
+			return true; \
+		}
+	#define VALUE(some_str) 
+	
+	LIST_OF_PUNCT_TOKENS(VARNAME, VALUE)
+
+	#undef VARNAME
+	#undef VALUE
+
+
+	return false;
 }
