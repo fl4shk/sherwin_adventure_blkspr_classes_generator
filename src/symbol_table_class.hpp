@@ -28,23 +28,51 @@ class Symbol
 {
 private:		// variables
 	std::string __name;
-	Tok __token = Tok::Blank;
+	Tok __token;
 
 public:		// functions
 	inline Symbol()
 	{
 	}
-	inline Symbol(const std::string& s_name, Tok s_token) : __name(s_name),
-		__token(s_token)
+	inline Symbol(const std::string& s_name, const Tok& s_token) 
+		: __name(s_name), __token(s_token)
 	{
+	}
+	inline Symbol(std::string&& s_name, Tok&& s_token)
+		: __name(std::move(s_name)), __token(std::move(s_token))
+	{
+	}
+	inline Symbol(const Symbol& to_copy)
+	{
+		*this = to_copy;
+	}
+	inline Symbol(Symbol&& to_move)
+	{
+		*this = std::move(to_move);
+	}
+
+	inline Symbol& operator = (const Symbol& to_copy)
+	{
+		__name = to_copy.__name;
+		__token = to_copy.__token;
+
+		return *this;
+	}
+	inline Symbol& operator = (Symbol&& to_move)
+	{
+		__name = std::move(to_move.__name);
+		__token = std::move(to_move.__token);
+
+		return *this;
 	}
 
 	gen_getter_by_con_ref(name)
-	gen_getter_by_val(token)
+	gen_getter_by_con_ref(token)
 
 	gen_setter_by_con_ref(name)
 	gen_setter_by_rval_ref(name)
-	gen_setter_by_val(token)
+	gen_setter_by_con_ref(token)
+	gen_setter_by_rval_ref(token)
 
 };
 
@@ -68,12 +96,12 @@ public:		// functions
 		return __table.at(some_name);
 	}
 
-	inline Symbol& at(Tok some_token)
+	inline Symbol& at(const Tok& some_token)
 	{
 		return __table[__tok_to_str_map.at(some_token)];
 	}
 
-	inline const Symbol& at(Tok some_token) const
+	inline const Symbol& at(const Tok& some_token) const
 	{
 		return __table.at(__tok_to_str_map.at(some_token));
 	}

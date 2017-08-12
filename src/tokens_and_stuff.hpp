@@ -21,43 +21,119 @@
 #ifndef tokens_and_stuff_hpp
 #define tokens_and_stuff_hpp
 
+#include "misc_includes.hpp"
 
-enum class Tok : int
+class Tok
 {
-	// "block"
-	Block,
+private:		// variables
+	std::string __name;
 
+public:		// functions
+	inline Tok()
+	{
+	}
+	inline Tok(const std::string& s_name) : __name(s_name)
+	{
+	}
+	inline Tok(std::string&& s_name) : __name(std::move(s_name))
+	{
+	}
+	inline Tok(const Tok& to_copy)
+	{
+		*this = to_copy;
+	}
+	inline Tok(Tok&& to_move)
+	{
+		*this = std::move(to_move);
+	}
 
-	// "sprite"
-	Sprite,
+	inline Tok& operator = (const Tok& to_copy)
+	{
+		__name = to_copy.__name;
+		return *this;
+	}
 
-	// "set_name"
-	SetName,
+	inline Tok& operator = (Tok&& to_move)
+	{
+		__name = std::move(to_move.__name);
+		return *this;
+	}
 
-	// "const"
-	Const,
+	inline bool operator == (const Tok& to_cmp) const
+	{
+		return (name() == to_cmp.name());
+	}
+	inline bool operator != (const Tok& to_cmp) const
+	{
+		return (name() != to_cmp.name());
+	}
 
-	// "(", ")"
-	LParen,
-	RParen,
+	inline bool operator < (const Tok& to_cmp) const
+	{
+		return (name() < to_cmp.name());
+	}
 
-	// "{", "}"
-	LBrace,
-	RBrace,
+	gen_getter_by_con_ref(name)
 
-	// "=", ";", ","
-	Equals,
-	Semicolon,
-	Comma,
+	gen_setter_by_con_ref(name)
+	gen_setter_by_rval_ref(name)
 
-
-	// These don't really need string equivalents
-	Number,
-	Ident,
-
-
-	// 
-	Blank = -1,
 };
+namespace std
+{
+	template<>
+	struct hash<Tok>
+	{
+		typedef Tok argument_type;
+		typedef size_t result_type;
+		result_type operator () (const argument_type& token) const
+		{
+			//return std::hash<std::string>(token.name());
+			return hash<string>()(token.name());
+		}
+	};
+}
+
+#define LIST_OF_TOKENS(VAR_NAME_MACRO, VALUE_MACRO) \
+\
+/* "block" */ \
+VAR_NAME_MACRO(Block) VALUE_MACRO("block") \
+\
+\
+/* "sprite" */ \
+VAR_NAME_MACRO(Sprite) VALUE_MACRO("sprite") \
+\
+/* "set_name" */ \
+VAR_NAME_MACRO(SetName) VALUE_MACRO("set_name") \
+\
+/* "const" */ \
+VAR_NAME_MACRO(Const) VALUE_MACRO("const") \
+\
+/* "(", ")" */ \
+VAR_NAME_MACRO(LParen) VALUE_MACRO("(") \
+VAR_NAME_MACRO(RParen) VALUE_MACRO(")") \
+\
+/* "{", "}" */ \
+VAR_NAME_MACRO(LBrace) VALUE_MACRO("{") \
+VAR_NAME_MACRO(RBrace) VALUE_MACRO("}") \
+\
+/* "=", ";", "," */ \
+VAR_NAME_MACRO(Equals) VALUE_MACRO("=") \
+VAR_NAME_MACRO(Semicolon) VALUE_MACRO(";") \
+VAR_NAME_MACRO(Comma) VALUE_MACRO(",") \
+\
+\
+/* "__keyword_number", "__keyword_ident" */ \
+VAR_NAME_MACRO(Number) VALUE_MACRO("__keyword_number") \
+VAR_NAME_MACRO(Ident) VALUE_MACRO("__keyword_ident") \
+\
+/* "__keyword_blank" */ \
+VAR_NAME_MACRO(Blank) VALUE_MACRO("__keyword_blank")
+
+
+#define VAR_NAME_MACRO(some_tok) \
+	extern Tok some_tok;
+#define VALUE_MACRO(some_str) 
+
 
 #endif		// tokens_and_stuff_hpp
