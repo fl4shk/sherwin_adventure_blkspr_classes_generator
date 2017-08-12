@@ -53,6 +53,7 @@ private:		// variables
 	int __next_char = ' ';
 	PTok __next_tok = nullptr;
 	std::string __next_sym_str;
+	s64 __next_num = -1;
 
 	bool __found_set_name = false;
 
@@ -98,7 +99,40 @@ private:		// functions
 	void handle_block();
 	void handle_sprite();
 
-	void handle_set_name(std::string& temp_name);
+	
+	
+	template<typename MapThing>
+	void handle_set_name(std::map<std::string, MapThing>& some_map, 
+		const std::string& debug_thing, std::string& temp_name)
+	{
+		set_found_set_name(true);
+
+		lex();
+
+		need(&Tok::LParen);
+
+		if (next_tok() == &Tok::Ident)
+		{
+			temp_name = sym_tbl().at(next_sym_str()).name();
+			lex();
+		}
+		else
+		{
+			expected(&Tok::Ident);
+		}
+
+		if (some_map.count(temp_name) != 0)
+		{
+			err("Can't have more than one type of ", debug_thing,
+				" called \"", temp_name, "\"!");
+		}
+
+		need(&Tok::RParen);
+		need(&Tok::Semicolon);
+
+	}
+
+
 	bool next_tok_is_punct() const;
 
 
@@ -110,6 +144,7 @@ private:		// functions
 	gen_getter_by_val(line_num)
 	gen_getter_by_val(next_char)
 	gen_getter_by_val(next_tok)
+	gen_getter_by_val(next_num)
 	gen_getter_by_con_ref(next_sym_str)
 	gen_getter_by_val(found_set_name)
 
@@ -118,6 +153,7 @@ private:		// functions
 	gen_setter_by_val(next_char)
 	gen_setter_by_val(next_tok)
 	gen_setter_by_con_ref(next_sym_str)
+	gen_setter_by_val(next_num);
 	gen_setter_by_val(found_set_name)
 
 
