@@ -105,6 +105,11 @@ private:		// functions
 	void handle_set_name(std::map<std::string, MapThing>& some_map, 
 		const std::string& debug_thing, std::string& temp_name)
 	{
+		if (found_set_name())
+		{
+			err("Can't have more than one use of the \"set_name()\" ",
+				"command!");
+		}
 		set_found_set_name(true);
 
 		lex();
