@@ -18,10 +18,36 @@
 // see <http://www.gnu.org/licenses/>.
 
 
+#include "misc_includes.hpp"
+
+enum class Tok : int
+{
+	Block,
+	Sprite,
+	SetName,
+
+	Const,
+
+	LParen,
+	RParen,
+
+	LBrace,
+	RBrace,
+
+	Number,
+	Ident,
+
+
+	Equals,
+	Semicolon,
+	Comma,
+
+};
 
 
 
 int main(int argc, char** argv)
 {
+	int a = getchar();
 	return 0;
 }
