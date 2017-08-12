@@ -19,12 +19,24 @@
 
 #include "tokens_and_stuff.hpp"
 
-#define VAR_NAME_MACRO(some_tok) \
+#define VARNAME(some_tok) \
 	const Tok some_tok
-#define VALUE_MACRO(some_str) \
+#define VALUE(some_str) \
 	(some_str);
 
-LIST_OF_TOKENS(VAR_NAME_MACRO, VALUE_MACRO)
+LIST_OF_TOKENS(VARNAME, VALUE)
 
-#undef VAR_NAME_MACRO
-#undef VALUE_MACRO
+#undef VARNAME
+#undef VALUE
+
+
+#define VARNAME(some_tok) \
+	&some_tok,
+#define VALUE(some_str)
+
+
+const std::vector<const Tok*> tok_vec
+({
+	LIST_OF_TOKENS(VARNAME, VALUE)
+});
+

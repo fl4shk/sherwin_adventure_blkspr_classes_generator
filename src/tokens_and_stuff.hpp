@@ -94,51 +94,52 @@ namespace std
 	};
 }
 
-#define LIST_OF_TOKENS(VAR_NAME_MACRO, VALUE_MACRO) \
+#define LIST_OF_TOKENS(VARNAME, VAL) \
 \
 /* "block" */ \
-VAR_NAME_MACRO(Block) VALUE_MACRO("block") \
+VARNAME(Block) VAL("block") \
 \
 \
 /* "sprite" */ \
-VAR_NAME_MACRO(Sprite) VALUE_MACRO("sprite") \
+VARNAME(Sprite) VAL("sprite") \
 \
 /* "set_name" */ \
-VAR_NAME_MACRO(SetName) VALUE_MACRO("set_name") \
+VARNAME(SetName) VAL("set_name") \
 \
 /* "const" */ \
-VAR_NAME_MACRO(Const) VALUE_MACRO("const") \
+VARNAME(Const) VAL("const") \
 \
 /* "(", ")" */ \
-VAR_NAME_MACRO(LParen) VALUE_MACRO("(") \
-VAR_NAME_MACRO(RParen) VALUE_MACRO(")") \
+VARNAME(LParen) VAL("(") \
+VARNAME(RParen) VAL(")") \
 \
 /* "{", "}" */ \
-VAR_NAME_MACRO(LBrace) VALUE_MACRO("{") \
-VAR_NAME_MACRO(RBrace) VALUE_MACRO("}") \
+VARNAME(LBrace) VAL("{") \
+VARNAME(RBrace) VAL("}") \
 \
 /* "=", ";", "," */ \
-VAR_NAME_MACRO(Equals) VALUE_MACRO("=") \
-VAR_NAME_MACRO(Semicolon) VALUE_MACRO(";") \
-VAR_NAME_MACRO(Comma) VALUE_MACRO(",") \
+VARNAME(Equals) VAL("=") \
+VARNAME(Semicolon) VAL(";") \
+VARNAME(Comma) VAL(",") \
 \
 \
 /* "__keyword_number", "__keyword_ident" */ \
-VAR_NAME_MACRO(Number) VALUE_MACRO("__keyword_number") \
-VAR_NAME_MACRO(Ident) VALUE_MACRO("__keyword_ident") \
+VARNAME(Number) VAL("__keyword_number") \
+VARNAME(Ident) VAL("__keyword_ident") \
 \
 /* "__keyword_blank" */ \
-VAR_NAME_MACRO(Blank) VALUE_MACRO("__keyword_blank")
+VARNAME(Blank) VAL("__keyword_blank")
 
 
-#define VAR_NAME_MACRO(some_tok) \
+#define VARNAME(some_tok) \
 	extern const Tok some_tok;
-#define VALUE_MACRO(some_str) 
+#define VALUE(some_str) 
 
-LIST_OF_TOKENS(VAR_NAME_MACRO, VALUE_MACRO)
+LIST_OF_TOKENS(VARNAME, VALUE)
 
-#undef VAR_NAME_MACRO
-#undef VALUE_MACRO
+#undef VARNAME
+#undef VALUE
 
+extern const std::vector<const Tok*> tok_vec;
 
 #endif		// tokens_and_stuff_hpp
