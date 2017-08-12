@@ -20,6 +20,7 @@
 
 #include "misc_includes.hpp"
 
+
 enum class Tok : int
 {
 	// "block"
@@ -59,9 +60,20 @@ enum class Tok : int
 };
 
 
+class Symbol
+{
+public:		// variables
+	
+
+public:		// functions
+	
+};
+
+
 
 int main(int argc, char** argv)
 {
 	int a = getchar();
 	return 0;
 }
+
