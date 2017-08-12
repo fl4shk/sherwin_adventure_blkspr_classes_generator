@@ -20,18 +20,19 @@
 #include "tokens_and_stuff.hpp"
 
 #define VARNAME(some_tok) \
-	const Tok some_tok
+	Tok::some_tok
 #define VALUE(some_str) \
-	(some_str);
+	(some_str),
 
-LIST_OF_TOKENS(VARNAME, VALUE)
+const Tok LIST_OF_TOKENS(VARNAME, VALUE) Tok::Dummy;
 
 #undef VARNAME
 #undef VALUE
 
 
+
 #define VARNAME(some_tok) \
-	&some_tok,
+	&Tok::some_tok,
 #define VALUE(some_str)
 
 
@@ -40,3 +41,6 @@ const std::vector<const Tok*> tok_vec
 	LIST_OF_TOKENS(VARNAME, VALUE)
 });
 
+
+#undef VARNAME
+#undef VALUE

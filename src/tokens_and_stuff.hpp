@@ -23,10 +23,62 @@
 
 #include "misc_includes.hpp"
 
+#define LIST_OF_TOKENS(VARNAME, VAL) \
+\
+/* "block" */ \
+VARNAME(Block) VAL("block") \
+\
+\
+/* "sprite" */ \
+VARNAME(Sprite) VAL("sprite") \
+\
+/* "set_name" */ \
+VARNAME(SetName) VAL("set_name") \
+\
+/* "const" */ \
+VARNAME(Const) VAL("const") \
+\
+/* "(", ")" */ \
+VARNAME(LParen) VAL("(") \
+VARNAME(RParen) VAL(")") \
+\
+/* "{", "}" */ \
+VARNAME(LBrace) VAL("{") \
+VARNAME(RBrace) VAL("}") \
+\
+/* "=", ";", "," */ \
+VARNAME(Equals) VAL("=") \
+VARNAME(Semicolon) VAL(";") \
+VARNAME(Comma) VAL(",") \
+\
+\
+/* "__keyword_number", "__keyword_ident" */ \
+VARNAME(Number) VAL("__keyword_number") \
+VARNAME(Ident) VAL("__keyword_ident") \
+\
+/* "__keyword_blank" */ \
+VARNAME(Blank) VAL("__keyword_blank")
+
+
+
+
+
 class Tok
 {
 private:		// variables
 	std::string __name;
+
+public:		// constants
+	#define VARNAME(some_tok) \
+		some_tok,
+	#define VALUE(some_str) 
+
+	static const Tok LIST_OF_TOKENS(VARNAME, VALUE) Dummy;
+
+	#undef VARNAME
+	#undef VALUE
+
+	static const std::vector<const Tok*> tok_vec;
 
 public:		// functions
 	inline Tok()
@@ -94,52 +146,5 @@ namespace std
 	};
 }
 
-#define LIST_OF_TOKENS(VARNAME, VAL) \
-\
-/* "block" */ \
-VARNAME(Block) VAL("block") \
-\
-\
-/* "sprite" */ \
-VARNAME(Sprite) VAL("sprite") \
-\
-/* "set_name" */ \
-VARNAME(SetName) VAL("set_name") \
-\
-/* "const" */ \
-VARNAME(Const) VAL("const") \
-\
-/* "(", ")" */ \
-VARNAME(LParen) VAL("(") \
-VARNAME(RParen) VAL(")") \
-\
-/* "{", "}" */ \
-VARNAME(LBrace) VAL("{") \
-VARNAME(RBrace) VAL("}") \
-\
-/* "=", ";", "," */ \
-VARNAME(Equals) VAL("=") \
-VARNAME(Semicolon) VAL(";") \
-VARNAME(Comma) VAL(",") \
-\
-\
-/* "__keyword_number", "__keyword_ident" */ \
-VARNAME(Number) VAL("__keyword_number") \
-VARNAME(Ident) VAL("__keyword_ident") \
-\
-/* "__keyword_blank" */ \
-VARNAME(Blank) VAL("__keyword_blank")
-
-
-#define VARNAME(some_tok) \
-	extern const Tok some_tok;
-#define VALUE(some_str) 
-
-LIST_OF_TOKENS(VARNAME, VALUE)
-
-#undef VARNAME
-#undef VALUE
-
-extern const std::vector<const Tok*> tok_vec;
 
 #endif		// tokens_and_stuff_hpp
