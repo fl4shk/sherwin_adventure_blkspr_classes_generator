@@ -22,25 +22,39 @@
 
 enum class Tok : int
 {
+	// "block"
 	Block,
+
+
+	// "sprite"
 	Sprite,
+
+	// "set_name"
 	SetName,
 
+	// "const"
 	Const,
 
+	// "(", ")"
 	LParen,
 	RParen,
 
+	// "{", "}"
 	LBrace,
 	RBrace,
 
+	// "="
+	Equals,
+
+	// ";"
+	Semicolon,
+
+	// ","
+	Comma,
+
+
 	Number,
 	Ident,
-
-
-	Equals,
-	Semicolon,
-	Comma,
 
 };
 
