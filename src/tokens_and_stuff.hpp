@@ -62,6 +62,8 @@ VARNAME(Blank) VAL("__keyword_blank")
 
 
 
+class Tok;
+typedef const Tok* PTok;
 
 // Why is this class holding all the instances of itself?  Jeez.  It works
 // fine; don't get me wrong.  It's just a little weird.
@@ -80,7 +82,7 @@ public:		// constants
 	#undef VARNAME
 	#undef VALUE
 
-	static const std::vector<const Tok*> tok_vec;
+	static const std::vector<PTok> tok_vec;
 
 public:		// functions
 	inline Tok()

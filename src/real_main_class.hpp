@@ -29,12 +29,35 @@
 class RealMain
 {
 private:		// variables
-	
+	SymbolTable __sym_tbl;
+
+	size_t __line_num = 0;
+
+	PTok __next_tok;
+	std::string __next_sym_str;
 
 public:		// functions
 	RealMain();
 
 	int operator () ();
+
+
+
+private:		// functions
+	template<typename... ArgTypes>
+	void err_suffix(ArgTypes&&... args)
+	{
+		printerr(", On line ", __line_num, ":  ", args..., "\n");
+		exit(1);
+	}
+	template<typename... ArgTypes>
+	void err(ArgTypes&&... args)
+	{
+		err_suffix("Error", args...);
+	}
+
+	PTok lex();
+
 
 };
 

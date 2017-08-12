@@ -28,17 +28,17 @@ class Symbol
 {
 private:		// variables
 	std::string __name;
-	const Tok* __token;
+	PTok __token;
 
 public:		// functions
 	inline Symbol()
 	{
 	}
-	inline Symbol(const std::string& s_name, const Tok* s_token) 
+	inline Symbol(const std::string& s_name, PTok s_token) 
 		: __name(s_name), __token(s_token)
 	{
 	}
-	inline Symbol(std::string&& s_name, const Tok* s_token)
+	inline Symbol(std::string&& s_name, PTok s_token)
 		: __name(std::move(s_name)), __token(std::move(s_token))
 	{
 	}
