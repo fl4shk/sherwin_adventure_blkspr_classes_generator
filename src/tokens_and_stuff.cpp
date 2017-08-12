@@ -20,9 +20,9 @@
 #include "tokens_and_stuff.hpp"
 
 #define VAR_NAME_MACRO(some_tok) \
-	const Tok some_tok = 
+	const Tok some_tok
 #define VALUE_MACRO(some_str) \
-	some_str;
+	(some_str);
 
 LIST_OF_TOKENS(VAR_NAME_MACRO, VALUE_MACRO)
 
