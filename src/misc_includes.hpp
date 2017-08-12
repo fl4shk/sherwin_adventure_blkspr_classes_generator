@@ -24,10 +24,12 @@
 #include "liborangepower_src/misc_types.hpp"
 #include "liborangepower_src/misc_output_classes.hpp"
 #include "liborangepower_src/gen_getter_setter_defines.hpp"
+#include "liborangepower_src/misc_bitwise_funcs.hpp"
 
 
 using namespace liborangepower::integer_types;
 using namespace liborangepower::printout_etc;
+using namespace liborangepower::bitwise;
 
 
 #endif		// misc_includes_hpp
