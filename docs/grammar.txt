@@ -1,0 +1,22 @@
+code = (block | sprite) .
+
+shared =
+  name 
+  [{const}]
+  [{multi_const}] .
+
+# Will add more later
+block =
+  shared .
+
+
+# Will add more later
+sprite =
+  shared .
+
+
+name = "set_name" "(" string ")" ";" .
+
+const_contents = ident "=" (number | ident) .
+const = "const" const_contents ";" .
+multi_const = "const" const_contents {"," const_contents} ";"

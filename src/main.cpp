@@ -16,6 +16,10 @@
 // with Sherwin's Adventure Block Classes Generator.  If not, see
 // <http://www.gnu.org/licenses/>.
 
+
+
+
+
 int main(int argc, char** argv)
 {
 	return 0;
