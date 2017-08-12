@@ -35,12 +35,16 @@ private:		// classes
 	{
 	public:		// variables
 		std::string name;
+
+		std::map<std::string, s64> cmap;
 	};
 
 	class Sprite
 	{
 	public:		// variables
 		std::string name;
+
+		std::map<std::string, s64> cmap;
 	};
 
 private:		// variables
@@ -99,6 +103,22 @@ private:		// functions
 	void handle_block();
 	void handle_sprite();
 
+	template<typename MapThing>
+	void handle_shared(std::map<std::string, MapThing>& some_map,
+		MapThing& to_insert, const std::string& debug_thing)
+	{
+		while ((next_tok() != &Tok::RBrace) && (next_tok() != &Tok::Blank))
+		{
+			if (next_tok() == &Tok::SetName)
+			{
+				std::string temp_name;
+				//handle_set_name(blk_map(), "block", temp_name);
+				handle_set_name(some_map, debug_thing, temp_name);
+				to_insert.name = std::move(temp_name);
+			}
+		}
+	}
+
 	
 	
 	template<typename MapThing>
@@ -110,6 +130,7 @@ private:		// functions
 			err("Can't have more than one use of the \"set_name()\" ",
 				"command!");
 		}
+
 		set_found_set_name(true);
 
 		lex();

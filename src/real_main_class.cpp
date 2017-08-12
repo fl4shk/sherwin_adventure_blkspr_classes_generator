@@ -210,16 +210,8 @@ void RealMain::handle_block()
 
 	Block to_insert;
 
-	while ((next_tok() != &Tok::RBrace) && (next_tok() != &Tok::Blank))
-	{
-		if (next_tok() == &Tok::SetName)
-		{
-			std::string temp_name;
-			handle_set_name(blk_map(), "block", temp_name);
-			to_insert.name = std::move(temp_name);
-		}
-	}
 
+	handle_shared(blk_map(), to_insert, "block");
 
 	need(&Tok::RBrace);
 
@@ -240,15 +232,7 @@ void RealMain::handle_sprite()
 
 	Sprite to_insert;
 
-	while ((next_tok() != &Tok::RBrace) && (next_tok() != &Tok::Blank))
-	{
-		if (next_tok() == &Tok::SetName)
-		{
-			std::string temp_name;
-			handle_set_name(spr_map(), "sprite", temp_name);
-			to_insert.name = std::move(temp_name);
-		}
-	}
+	handle_shared(spr_map(), to_insert, "sprite");
 
 	need(&Tok::RBrace);
 
