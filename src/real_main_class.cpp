@@ -26,5 +26,29 @@ RealMain::RealMain()
 
 int RealMain::operator () ()
 {
+	lex();
+
 	return 0;
+}
+
+
+void RealMain::advance()
+{
+	set_next_char(getchar());
+
+	if (next_char() == '\n')
+	{
+		++__line_num;
+	}
+}
+
+
+
+void RealMain::lex()
+{
+	PTok ret = nullptr;
+
+
+
+	__next_tok = ret;
 }
