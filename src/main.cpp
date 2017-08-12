@@ -44,13 +44,9 @@ enum class Tok : int
 	LBrace,
 	RBrace,
 
-	// "="
+	// "=", ";", ","
 	Equals,
-
-	// ";"
 	Semicolon,
-
-	// ","
 	Comma,
 
 
@@ -63,17 +59,22 @@ enum class Tok : int
 class Symbol
 {
 public:		// variables
-	
+	int value = -1;
 
 public:		// functions
-	
+	inline Symbol()
+	{
+	}
+	inline Symbol(int s_value) : value(s_value)
+	{
+	}
+
 };
 
 
 
 int main(int argc, char** argv)
 {
-	int a = getchar();
 	return 0;
 }
 
