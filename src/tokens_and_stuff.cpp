@@ -36,7 +36,7 @@ const Tok LIST_OF_TOKENS(VARNAME, VALUE) Tok::Dummy;
 #define VALUE(some_str)
 
 
-const std::vector<const Tok*> tok_vec
+const std::vector<const Tok*> Tok::tok_vec
 ({
 	LIST_OF_TOKENS(VARNAME, VALUE)
 });

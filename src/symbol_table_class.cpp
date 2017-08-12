@@ -23,4 +23,7 @@
 // Hardcoded list of built-in symbols
 SymbolTable::SymbolTable()
 {
+	for (auto& iter : Tok::tok_vec)
+	{
+	}
 }

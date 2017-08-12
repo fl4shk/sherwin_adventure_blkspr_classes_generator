@@ -66,7 +66,7 @@ VARNAME(Blank) VAL("__keyword_blank")
 class Tok
 {
 private:		// variables
-	std::string __name;
+	std::string __str;
 
 public:		// constants
 	#define VARNAME(some_tok) \
@@ -84,10 +84,10 @@ public:		// functions
 	inline Tok()
 	{
 	}
-	inline Tok(const std::string& s_name) : __name(s_name)
+	inline Tok(const std::string& s_str) : __str(s_str)
 	{
 	}
-	inline Tok(std::string&& s_name) : __name(std::move(s_name))
+	inline Tok(std::string&& s_str) : __str(std::move(s_str))
 	{
 	}
 	inline Tok(const Tok& to_copy)
@@ -101,36 +101,37 @@ public:		// functions
 
 	inline Tok& operator = (const Tok& to_copy)
 	{
-		__name = to_copy.__name;
+		__str = to_copy.__str;
 		return *this;
 	}
 
 	inline Tok& operator = (Tok&& to_move)
 	{
-		__name = std::move(to_move.__name);
+		__str = std::move(to_move.__str);
 		return *this;
 	}
 
 	inline bool operator == (const Tok& to_cmp) const
 	{
-		return (name() == to_cmp.name());
+		return (str() == to_cmp.str());
 	}
 	inline bool operator != (const Tok& to_cmp) const
 	{
-		return (name() != to_cmp.name());
+		return (str() != to_cmp.str());
 	}
 
 	inline bool operator < (const Tok& to_cmp) const
 	{
-		return (name() < to_cmp.name());
+		return (str() < to_cmp.str());
 	}
 
-	gen_getter_by_con_ref(name)
+	gen_getter_by_con_ref(str)
 
-	gen_setter_by_con_ref(name)
-	gen_setter_by_rval_ref(name)
+	gen_setter_by_con_ref(str)
+	gen_setter_by_rval_ref(str)
 
 };
+
 namespace std
 {
 	template<>
@@ -141,7 +142,7 @@ namespace std
 		result_type operator () (const argument_type& token) const
 		{
 			//return std::hash<std::string>(token.name());
-			return hash<string>()(token.name());
+			return hash<string>()(token.str());
 		}
 	};
 }

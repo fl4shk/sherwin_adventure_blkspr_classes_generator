@@ -28,17 +28,17 @@ class Symbol
 {
 private:		// variables
 	std::string __name;
-	Tok __token;
+	const Tok* __token;
 
 public:		// functions
 	inline Symbol()
 	{
 	}
-	inline Symbol(const std::string& s_name, const Tok& s_token) 
+	inline Symbol(const std::string& s_name, const Tok* s_token) 
 		: __name(s_name), __token(s_token)
 	{
 	}
-	inline Symbol(std::string&& s_name, Tok&& s_token)
+	inline Symbol(std::string&& s_name, const Tok* s_token)
 		: __name(std::move(s_name)), __token(std::move(s_token))
 	{
 	}
@@ -61,7 +61,7 @@ public:		// functions
 	inline Symbol& operator = (Symbol&& to_move)
 	{
 		__name = std::move(to_move.__name);
-		__token = std::move(to_move.__token);
+		__token = to_move.__token;
 
 		return *this;
 	}
@@ -80,7 +80,7 @@ class SymbolTable
 {
 private:		// variables
 	std::map<std::string, Symbol> __table;
-	std::map<Tok, std::string> __tok_to_str_map;
+	std::map<const Tok*, std::string> __tok_to_str_map;
 
 public:		// functions
 	SymbolTable();
@@ -96,12 +96,12 @@ public:		// functions
 		return __table.at(some_name);
 	}
 
-	inline Symbol& at(const Tok& some_token)
+	inline Symbol& at(const Tok* some_token)
 	{
 		return __table[__tok_to_str_map.at(some_token)];
 	}
 
-	inline const Symbol& at(const Tok& some_token) const
+	inline const Symbol& at(const Tok* some_token) const
 	{
 		return __table.at(__tok_to_str_map.at(some_token));
 	}
