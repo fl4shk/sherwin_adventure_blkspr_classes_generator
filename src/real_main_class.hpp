@@ -66,6 +66,10 @@ private:		// functions
 
 	void lex();
 
+	void parse();
+
+
+	gen_getter_by_ref(sym_tbl)
 
 	gen_getter_by_val(line_num)
 	gen_getter_by_val(next_char)

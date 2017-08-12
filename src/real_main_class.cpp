@@ -28,6 +28,11 @@ int RealMain::operator () ()
 {
 	lex();
 
+	while (next_char() != EOF)
+	{
+		parse();
+	}
+
 	return 0;
 }
 
@@ -79,13 +84,45 @@ void RealMain::lex()
 
 	LIST_OF_PUNCT_TOKENS(VARNAME, VALUE)
 
+	// An ident?
+	else if (isalpha(next_char()) || (next_char() == '_'))
+	{
+		advance();
 
-	#undef VARNAME
-	#undef VALUE
+		while (isalnum(next_char()) || (next_char() == '_'))
+		{
+			next_str += next_char();
+			advance();
+		}
 
-	//// An ident?
-	//else if (isalpha(next_char()) || (next_char() == '_'))
-	//{
-	//}
+		if (next_str == "")
+		{
+		}
+		
 
+		LIST_OF_IDENT_LIKE_TOKENS(VARNAME, VALUE)
+
+		#undef VARNAME
+		#undef VALUE
+
+
+		// If we haven't seen a symbol like this before...
+		if (!sym_tbl().contains(next_str))
+		{
+			// ...Then create a new symbol
+			Symbol to_insert(next_str, &Tok::Ident);
+
+			sym_tbl().at(next_str) = to_insert;
+		}
+
+
+		set_next_sym_str(next_str);
+
+		return;
+	}
+
+}
+
+void RealMain::parse()
+{
 }
