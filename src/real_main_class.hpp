@@ -37,6 +37,8 @@ private:		// variables
 	PTok __next_tok = nullptr;
 	std::string __next_sym_str;
 
+	bool __found_set_name = false;
+
 public:		// functions
 	RealMain();
 
@@ -77,6 +79,8 @@ private:		// functions
 	void handle_block();
 	void handle_sprite();
 
+	void handle_shared();
+
 
 	gen_getter_by_ref(sym_tbl)
 
@@ -84,11 +88,13 @@ private:		// functions
 	gen_getter_by_val(next_char)
 	gen_getter_by_val(next_tok)
 	gen_getter_by_con_ref(next_sym_str)
+	gen_getter_by_val(found_set_name)
 
 	gen_setter_by_val(line_num)
 	gen_setter_by_val(next_char)
 	gen_setter_by_val(next_tok)
 	gen_setter_by_con_ref(next_sym_str)
+	gen_setter_by_val(found_set_name)
 
 
 };

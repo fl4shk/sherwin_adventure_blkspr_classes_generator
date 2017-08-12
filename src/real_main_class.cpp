@@ -155,12 +155,17 @@ void RealMain::parse()
 
 void RealMain::handle_block()
 {
+	set_found_set_name(false);
+
 	lex();
 
 	if (next_tok() != &Tok::LBrace)
 	{
 		expected(&Tok::LBrace);
 	}
+
+
+	handle_shared();
 
 
 	lex();
@@ -170,10 +175,16 @@ void RealMain::handle_block()
 		expected(&Tok::RBrace);
 	}
 
+	if (found_set_name())
+	{
+		expected("an instance of \"set_name\"");
+	}
 }
 
 void RealMain::handle_sprite()
 {
+	set_found_set_name(false);
+
 	lex();
 
 	if (next_tok() != &Tok::LBrace)
@@ -182,10 +193,23 @@ void RealMain::handle_sprite()
 	}
 
 
+	handle_shared();
+
+
 	lex();
 	
 	if (next_tok() != &Tok::RBrace)
 	{
 		expected(&Tok::RBrace);
 	}
+
+	if (found_set_name())
+	{
+		expected("an instance of \"set_name\"");
+	}
+}
+
+void RealMain::handle_shared()
+{
+	
 }
