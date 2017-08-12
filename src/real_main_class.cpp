@@ -62,10 +62,26 @@ void RealMain::lex()
 		return;
 	}
 
-	//switch (next_char())
-	//{
+	std::string next_str;
+	next_str += next_char();
 
-	//}
+	if (next_str == "")
+	{
+	}
+
+	#define VARNAME(some_tok) \
+		else if (next_str == Tok::some_tok.str()) \
+		{ \
+			set_next_tok(&Tok::some_tok); \
+			return; \
+		}
+	#define VALUE(some_str)
+
+	LIST_OF_PUNCT_TOKENS(VARNAME, VALUE)
+
+
+	#undef VARNAME
+	#undef VALUE
 
 	//// An ident?
 	//else if (isalpha(next_char()) || (next_char() == '_'))
