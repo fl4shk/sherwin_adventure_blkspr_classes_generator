@@ -27,6 +27,7 @@ RealMain::RealMain()
 int RealMain::operator () ()
 {
 	//while (next_char() != EOF)
+	lex();
 	while (next_tok() != &Tok::Blank)
 	{
 		parse();
@@ -43,6 +44,7 @@ void RealMain::need(PTok tok)
 	}
 	else
 	{
+		printerr("need():  ");
 		expected("token of type \"", tok->str(), "\"!");
 	}
 }
@@ -137,18 +139,19 @@ void RealMain::lex()
 
 void RealMain::parse()
 {
-	lex();
-	printout("In parse():  ", next_tok()->str(), "\n");
+	printout("parse():  ", next_tok()->str(), "\n");
 
 	if (next_tok() == &Tok::Block)
 	{
 		//printout("I found a \"block\" token!\n");
+		lex();
 		handle_block();
 	}
 
 	else if (next_tok() == &Tok::Sprite)
 	{
 		//printout("I found a \"sprite\" token!\n");
+		lex();
 		handle_sprite();
 	}
 
@@ -203,8 +206,8 @@ void RealMain::handle_shared()
 	//	return;
 	//}
 
-	printout("handle_shared():  I found this type of token:  ",
-		next_tok()->str(), "\n");
+	//lex();
+
 }
 
 

@@ -63,7 +63,7 @@ private:		// functions
 	template<typename... ArgTypes>
 	void expected(ArgTypes&&... args) const
 	{
-		err_suffix("Expected ", args...);
+		err("Expected ", args...);
 	}
 	void need(PTok tok);
 
