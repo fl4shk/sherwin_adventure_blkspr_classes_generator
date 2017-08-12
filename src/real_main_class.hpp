@@ -31,7 +31,7 @@ class RealMain
 private:		// variables
 	SymbolTable __sym_tbl;
 
-	size_t __line_num = 0;
+	size_t __line_num = 1;
 
 	int __next_char = ' ';
 	PTok __next_tok = nullptr;

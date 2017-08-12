@@ -26,7 +26,8 @@ RealMain::RealMain()
 
 int RealMain::operator () ()
 {
-	while (next_char() != EOF)
+	//while (next_char() != EOF)
+	while (next_tok() != &Tok::Blank)
 	{
 		parse();
 	}
@@ -54,6 +55,8 @@ void RealMain::advance()
 
 void RealMain::lex()
 {
+	advance();
+
 	while (isspace(next_char()))
 	{
 		advance();
@@ -124,15 +127,23 @@ void RealMain::lex()
 void RealMain::parse()
 {
 	lex();
+	printout("In parse():  ", next_tok()->str(), "\n");
 
 	if (next_tok() == &Tok::Block)
 	{
-		printout("I found a \"block\" token!\n");
+		//printout("I found a \"block\" token!\n");
+		handle_block();
 	}
 
 	else if (next_tok() == &Tok::Sprite)
 	{
-		printout("I found a \"sprite\" token!\n");
+		//printout("I found a \"sprite\" token!\n");
+		handle_sprite();
+	}
+
+	else if (next_tok() == &Tok::Blank)
+	{
+		printout("Done.\n");
 	}
 
 	else
@@ -140,4 +151,41 @@ void RealMain::parse()
 		expected("token of type \"block\" or \"sprite\"!");
 	}
 	
+}
+
+void RealMain::handle_block()
+{
+	lex();
+
+	if (next_tok() != &Tok::LBrace)
+	{
+		expected(&Tok::LBrace);
+	}
+
+
+	lex();
+	
+	if (next_tok() != &Tok::RBrace)
+	{
+		expected(&Tok::RBrace);
+	}
+
+}
+
+void RealMain::handle_sprite()
+{
+	lex();
+
+	if (next_tok() != &Tok::LBrace)
+	{
+		expected(&Tok::LBrace);
+	}
+
+
+	lex();
+	
+	if (next_tok() != &Tok::RBrace)
+	{
+		expected(&Tok::RBrace);
+	}
 }
