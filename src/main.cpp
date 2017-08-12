@@ -1,6 +1,6 @@
 // This file is part of Sherwin's Adventure Block Classes Generator.
 // 
-// Copyright 2015-2017 by Andrew Clark (FL4SHK).
+// Copyright 2017 by Andrew Clark (FL4SHK).
 // 
 // Sherwin's Adventure Block Classes Generator is free software: you can
 // redistribute it and/or modify it under the terms of the GNU General
