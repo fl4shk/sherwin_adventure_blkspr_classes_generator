@@ -330,13 +330,13 @@ void RealMain::handle_const_contents
 		expected(&Tok::Ident);
 	}
 
+	need(&Tok::Equals);
+
 	if (some_cmap.count(temp_name) != 0)
 	{
 		err("In one block or sprite, can't have more than one constant ",
 			"with the identifer \"", temp_name, "\"!");
 	}
-
-	need(&Tok::Equals);
 
 	if (next_tok() == &Tok::Number)
 	{

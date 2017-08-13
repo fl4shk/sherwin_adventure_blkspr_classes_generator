@@ -195,7 +195,6 @@ private:		// functions
 		}
 	}
 
-
 	template<typename MapThing>
 	void handle_set_name(std::map<std::string, MapThing>& some_map, 
 		const std::string& debug_thing, std::string& temp_name)
