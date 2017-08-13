@@ -73,7 +73,7 @@ private:		// classes
 	class Block
 	{
 	public:		// variables
-		std::string name;
+		std::string name, filename_stuff;
 
 		std::map<std::string, Constant> cmap;
 	};
@@ -81,7 +81,7 @@ private:		// classes
 	class Sprite
 	{
 	public:		// variables
-		std::string name;
+		std::string name, filename_stuff;
 
 		std::map<std::string, Constant> cmap;
 	};
@@ -98,7 +98,7 @@ private:		// variables
 	std::string __next_sym_str;
 	s64 __next_num = -1;
 
-	bool __found_set_name = false;
+	bool __found_set_name = false, __found_set_filename_stuff = false;
 
 public:		// functions
 	RealMain();
@@ -148,6 +148,7 @@ private:		// functions
 		void (RealMain::* extras_func)(MapThing& to_insert))
 	{
 		set_found_set_name(false);
+		set_found_set_filename_stuff(false);
 
 		need(&Tok::LBrace);
 
@@ -161,6 +162,14 @@ private:		// functions
 				//handle_set_name(blk_map(), "block", temp_name);
 				handle_set_name(some_map, debug_thing, temp_name);
 				to_insert.name = std::move(temp_name);
+			}
+			else if (next_tok() == &Tok::SetFilenameStuff)
+			{
+				std::string temp_filename_stuff;
+
+				handle_set_filename_stuff(some_map, debug_thing,
+					temp_filename_stuff);
+				to_insert.filename_stuff = std::move(temp_filename_stuff);
 			}
 			else if (next_tok() == &Tok::Const)
 			{
@@ -180,11 +189,13 @@ private:		// functions
 		{
 			expected("an instance of \"set_name\"");
 		}
+		if (!found_set_filename_stuff())
+		{
+			expected("an instance of \"set_filename_stuff\"");
+		}
 	}
 
 
-	
-	
 	template<typename MapThing>
 	void handle_set_name(std::map<std::string, MapThing>& some_map, 
 		const std::string& debug_thing, std::string& temp_name)
@@ -222,6 +233,49 @@ private:		// functions
 
 	}
 
+	template<typename MapThing>
+	void handle_set_filename_stuff
+		(std::map<std::string, MapThing>& some_map, 
+		const std::string& debug_thing, std::string& temp_filename_stuff)
+	{
+		if (found_set_filename_stuff())
+		{
+			err("Can't have more than one use of the ",
+				"\"set_filename_stuff()\" command!");
+		}
+
+		set_found_set_filename_stuff(true);
+
+		lex();
+
+		need(&Tok::LParen);
+
+		if (next_tok() == &Tok::Ident)
+		{
+			temp_filename_stuff = sym_tbl().at(next_sym_str()).name();
+			lex();
+		}
+		else
+		{
+			expected(&Tok::Ident);
+		}
+
+		for (auto& iter : some_map)
+		{
+			if (iter.second.filename_stuff == temp_filename_stuff)
+			{
+				err("Can't have more than one type of ", debug_thing,
+					" called \"", temp_filename_stuff, "\"!");
+			}
+		}
+
+		need(&Tok::RParen);
+		need(&Tok::Semicolon);
+
+	}
+
+
+
 	void handle_const(std::map<std::string, Constant>& some_cmap);
 	void handle_const_contents(std::map<std::string, Constant>& some_cmap,
 		ConstType some_const_type);
@@ -243,6 +297,7 @@ private:		// functions
 	gen_getter_by_val(next_num)
 	gen_getter_by_con_ref(next_sym_str)
 	gen_getter_by_val(found_set_name)
+	gen_getter_by_val(found_set_filename_stuff)
 
 
 	gen_setter_by_val(line_num)
@@ -251,6 +306,7 @@ private:		// functions
 	gen_setter_by_con_ref(next_sym_str)
 	gen_setter_by_val(next_num);
 	gen_setter_by_val(found_set_name)
+	gen_setter_by_val(found_set_filename_stuff)
 
 
 };

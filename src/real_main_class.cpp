@@ -36,7 +36,9 @@ int RealMain::operator () ()
 
 	for (auto& block_iter : blk_map())
 	{
-		printout("Block with name \"", block_iter.second.name, "\"\n");
+		printout("Block with name, filename_stuff:  \"", 
+			block_iter.second.name, "\", \"", 
+			block_iter.second.filename_stuff, "\"\n");
 
 		if (block_iter.second.cmap.size() == 0)
 		{
@@ -57,7 +59,9 @@ int RealMain::operator () ()
 
 	for (auto& sprite_iter : spr_map())
 	{
-		printout("Sprite with name \"", sprite_iter.second.name, "\"\n");
+		printout("Sprite with name, filename_stuff:  \"", 
+			sprite_iter.second.name, "\", \"", 
+			sprite_iter.second.filename_stuff, "\"\n");
 		
 		if (sprite_iter.second.cmap.size() == 0)
 		{

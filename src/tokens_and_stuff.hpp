@@ -44,6 +44,9 @@ VARNAME(Sprite) VALUE("sprite") \
 /* "set_name" */ \
 VARNAME(SetName) VALUE("set_name") \
 \
+/* "set_filename_stuff" */ \
+VARNAME(SetFilenameStuff) VALUE("set_filename_stuff") \
+\
 /* "const" */ \
 VARNAME(Const) VALUE("const") \
 \
