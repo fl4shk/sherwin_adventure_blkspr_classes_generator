@@ -34,6 +34,30 @@ int RealMain::operator () ()
 		parse();
 	}
 
+	for (auto& block_iter : blk_map())
+	{
+		printout("Block with name \"", block_iter.second.name, "\"\n");
+
+		printout("And constants\n");
+
+		for (auto& citer : block_iter.second.cmap)
+		{
+			printout("\"", citer.first, "\" = ", citer.second, "\n");
+		}
+	}
+
+	for (auto& sprite_iter : spr_map())
+	{
+		printout("Sprite with name \"", sprite_iter.second.name, "\"\n");
+
+		printout("And constants\n");
+
+		for (auto& citer : sprite_iter.second.cmap)
+		{
+			printout("\"", citer.first, "\" = ", citer.second, "\n");
+		}
+	}
+
 	return 0;
 }
 
@@ -238,6 +262,7 @@ void RealMain::handle_const(std::map<std::string, s64>& some_cmap)
 			expected("token of type \";\" or \",\"!");
 		}
 	}
+	lex();
 
 }
 
@@ -277,13 +302,22 @@ void RealMain::handle_const_contents(std::map<std::string, s64>& some_cmap)
 
 void RealMain::handle_block_specifics(Block& to_insert)
 {
-	lex();
 	printout("handle_block_specifics()\n");
+	printout(line_num(), "\t\t");
+	printout(next_tok()->str(), " ");
+	lex();
+	printout("\t\t", line_num(), "\t\t");
+	printout(next_tok()->str(), "\n");
 }
 void RealMain::handle_sprite_specifics(Sprite& to_insert)
 {
-	lex();
 	printout("handle_sprite_specifics()\n");
+	printout(line_num(), "\t\t");
+	printout(next_tok()->str(), " ");
+	lex();
+	printout("\t\t", line_num(), "\t\t");
+	printout(next_tok()->str(), "\n");
+
 }
 
 
