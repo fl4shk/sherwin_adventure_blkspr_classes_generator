@@ -38,6 +38,11 @@ int RealMain::operator () ()
 	{
 		printout("Block with name \"", block_iter.second.name, "\"\n");
 
+		if (block_iter.second.cmap.size() == 0)
+		{
+			continue;
+		}
+
 		printout("And constants\n");
 
 		for (auto& citer : block_iter.second.cmap)
@@ -49,6 +54,11 @@ int RealMain::operator () ()
 	for (auto& sprite_iter : spr_map())
 	{
 		printout("Sprite with name \"", sprite_iter.second.name, "\"\n");
+		
+		if (sprite_iter.second.cmap.size() == 0)
+		{
+			continue;
+		}
 
 		printout("And constants\n");
 
