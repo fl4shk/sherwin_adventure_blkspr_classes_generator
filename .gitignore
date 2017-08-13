@@ -39,5 +39,5 @@ types_*.taghl
 makefile_temp
 *.txt.ignore
 *.cpp.ignore
-blkspr_classes_generator
-blkspr_classes_generator_debug
+sherwin_adventure_blkspr_classes_generator
+sherwin_adventure_blkspr_classes_generator_debug
