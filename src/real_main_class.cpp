@@ -143,8 +143,8 @@ void RealMain::lex()
 		}
 	#define VALUE(some_str)
 
-
 	LIST_OF_PUNCT_TOKENS(VARNAME, VALUE)
+	LIST_OF_SINGLE_CHAR_OPERATOR_TOKENS(VARNAME, VALUE)
 
 	#undef VARNAME
 
@@ -212,7 +212,55 @@ void RealMain::lex()
 
 		set_next_tok(&Tok::Number);
 
+		return;
+
 	}
+
+	// BitLsl
+	if (next_char() == '<')
+	{
+		advance();
+
+		if (next_char() == '<')
+		{
+			advance();
+			set_next_tok(&Tok::BitLsl);
+		}
+		else
+		{
+			expected("\"<<\" but got \"", next_str, "\"!");
+		}
+
+		return;
+	}
+
+	// BitLsr or BitAsr
+	if (next_char() == '>')
+	{
+		advance();
+
+		if (next_char() == '>')
+		{
+			advance();
+
+			if (next_char() == '>')
+			{
+				advance();
+				set_next_tok(&Tok::BitAsr);
+			}
+			else
+			{
+				set_next_tok(&Tok::BitLsr);
+			}
+		}
+		else
+		{
+			expected("\">>\" or \">>>\" but got \"", next_str, "\"!");
+		}
+		
+		return;
+	}
+
 
 }
 

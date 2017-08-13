@@ -41,10 +41,8 @@ VARNAME(Block) VALUE("block") \
 /* "sprite" */ \
 VARNAME(Sprite) VALUE("sprite") \
 \
-/* "set_name" */ \
+/* "set_name", "set_filename_stuff" */ \
 VARNAME(SetName) VALUE("set_name") \
-\
-/* "set_filename_stuff" */ \
 VARNAME(SetFilenameStuff) VALUE("set_filename_stuff") \
 \
 /* "const" */ \
@@ -66,12 +64,32 @@ VARNAME(RBrace) VALUE("}") \
 VARNAME(Equals) VALUE("=") \
 VARNAME(Semicolon) VALUE(";") \
 VARNAME(Comma) VALUE(",") \
-\
+
+
+#define LIST_OF_SINGLE_CHAR_OPERATOR_TOKENS(VARNAME, VALUE) \
 /* "+", "-", etc */ \
 VARNAME(Plus) VALUE("+") \
 VARNAME(Minus) VALUE("-") \
 VARNAME(Mult) VALUE("*") \
-VARNAME(Div) VALUE("/")
+VARNAME(Div) VALUE("/") \
+\
+/* "&", "|", "^" */ \
+VARNAME(BitAnd) VALUE("&") \
+VARNAME(BitOr) VALUE("|") \
+VARNAME(BitXor) VALUE("^") \
+VARNAME(BitNot) VALUE("~") \
+
+#define LIST_OF_MULTI_CHAR_OPERATOR_TOKESN(VARNAME, VALUE) \
+/* Logical shift left, Logical shift right, Arithmetic shift right */ \
+VARNAME(BitLsl) VALUE("<<") \
+VARNAME(BitLsr) VALUE(">>") \
+VARNAME(BitAsr) VALUE(">>>")
+
+#define LIST_OF_OPERATOR_TOKENS(VARNAME, VALUE) \
+LIST_OF_SINGLE_CHAR_OPERATOR_TOKENS(VARNAME, VALUE) \
+LIST_OF_MULTI_CHAR_OPERATOR_TOKESN(VARNAME, VALUE)
+
+
 
 
 
@@ -88,6 +106,7 @@ VARNAME(Blank) VALUE("Blank")
 #define LIST_OF_TOKENS(VARNAME, VALUE) \
 LIST_OF_IDENT_LIKE_TOKENS(VARNAME, VALUE) \
 LIST_OF_PUNCT_TOKENS(VARNAME, VALUE) \
+LIST_OF_OPERATOR_TOKENS(VARNAME, VALUE) \
 LIST_OF_EXTRA_KEYWORD_TOKENS(VARNAME, VALUE)
 
 
