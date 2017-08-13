@@ -279,6 +279,9 @@ private:		// functions
 	void handle_const_contents(std::map<std::string, Constant>& some_cmap,
 		ConstType some_const_type);
 
+	s64 handle_factor();
+	s64 handle_expr();
+
 	void handle_block_specifics(Block& to_insert);
 	void handle_sprite_specifics(Sprite& to_insert);
 

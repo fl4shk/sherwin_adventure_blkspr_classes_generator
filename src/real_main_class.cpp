@@ -292,9 +292,12 @@ void RealMain::handle_const(std::map<std::string, Constant>& some_cmap)
 
 	for (;;)
 	{
+		printout("handle_const():  ", next_tok()->str(), "\n");
 		handle_const_contents(some_cmap, some_const_type);
 
-		lex();
+		//lex();
+
+		printout("handle_const():  ", next_tok()->str(), "\n");
 
 		if (next_tok() == &Tok::Semicolon)
 		{
@@ -338,17 +341,92 @@ void RealMain::handle_const_contents
 			"with the identifer \"", temp_name, "\"!");
 	}
 
+
+	//if (next_tok() == &Tok::Number)
+	//{
+	//	Constant to_insert;
+	//	to_insert.type = some_const_type;
+	//	to_insert.value = next_num();
+	//	some_cmap[temp_name] = to_insert;
+	//}
+	//else
+	//{
+	//	expected(&Tok::Number);
+	//}
+
+	Constant to_insert;
+	to_insert.type = some_const_type;
+	to_insert.value = handle_expr();
+	some_cmap[temp_name] = to_insert;
+}
+
+
+
+s64 RealMain::handle_factor()
+{
+	s64 ret;
+
+	need(&Tok::LParen);
+
+	ret = handle_expr();
+
+	need(&Tok::RParen);
+
+	return ret;
+}
+
+s64 RealMain::handle_expr()
+{
+	s64 ret;
+
+
+	const auto old_next_tok = next_tok();
+	if ((old_next_tok == &Tok::Plus) || (old_next_tok == &Tok::Minus))
+	{
+		lex();
+	}
+
 	if (next_tok() == &Tok::Number)
 	{
-		Constant to_insert;
-		to_insert.type = some_const_type;
-		to_insert.value = next_num();
-		some_cmap[temp_name] = to_insert;
+		ret = next_num();
+		lex();
 	}
 	else
 	{
-		expected(&Tok::Number);
+		ret = handle_factor();
 	}
+	
+	if (old_next_tok == &Tok::Minus)
+	{
+		ret = -ret;
+	}
+
+
+	if (next_tok() == &Tok::Plus)
+	{
+		s64 temp = handle_expr();
+		printout("handle_expr():  plus in part 2:  ", ret, ", ", temp, 
+			"\n");
+		ret += temp;
+	}
+	else if (next_tok() == &Tok::Minus)
+	{
+		s64 temp = handle_expr();
+		printout("handle_expr():  minus in part 2:  ", ret, ", ", temp, 
+			"\n");
+		ret += temp;
+	}
+
+	
+	//if (old_next_tok == &Tok::Plus)
+	//{
+	//}
+	//else if (old_next_tok == &Tok::Minus)
+	//{
+	//	ret = -ret;
+	//}
+
+	return ret;
 }
 
 void RealMain::handle_block_specifics(Block& to_insert)

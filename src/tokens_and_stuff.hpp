@@ -66,6 +66,11 @@ VARNAME(RBrace) VALUE("}") \
 VARNAME(Equals) VALUE("=") \
 VARNAME(Semicolon) VALUE(";") \
 VARNAME(Comma) VALUE(",") \
+\
+/* "+", "-" */ \
+VARNAME(Plus) VALUE("+") \
+VARNAME(Minus) VALUE("-")
+
 
 
 #define LIST_OF_EXTRA_KEYWORD_TOKENS(VARNAME, VALUE) \
