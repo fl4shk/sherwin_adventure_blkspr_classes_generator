@@ -67,9 +67,11 @@ VARNAME(Equals) VALUE("=") \
 VARNAME(Semicolon) VALUE(";") \
 VARNAME(Comma) VALUE(",") \
 \
-/* "+", "-" */ \
+/* "+", "-", etc */ \
 VARNAME(Plus) VALUE("+") \
-VARNAME(Minus) VALUE("-")
+VARNAME(Minus) VALUE("-") \
+VARNAME(Mult) VALUE("*") \
+VARNAME(Div) VALUE("/")
 
 
 

@@ -362,8 +362,193 @@ void RealMain::handle_const_contents
 
 
 
+//s64 RealMain::handle_factor()
+//{
+//	s64 ret;
+//
+//	need(&Tok::LParen);
+//
+//	ret = handle_expr();
+//
+//	need(&Tok::RParen);
+//
+//	return ret;
+//}
+//
+//s64 RealMain::handle_expr()
+//{
+//	s64 ret;
+//
+//
+//	const auto old_next_tok = next_tok();
+//	if ((old_next_tok == &Tok::Plus) || (old_next_tok == &Tok::Minus))
+//	{
+//		lex();
+//	}
+//
+//	if (next_tok() == &Tok::Number)
+//	{
+//		ret = next_num();
+//		lex();
+//	}
+//	else
+//	{
+//		ret = handle_factor();
+//	}
+//	
+//	if (old_next_tok == &Tok::Minus)
+//	{
+//		ret = -ret;
+//	}
+//
+//
+//	if (next_tok() == &Tok::Plus)
+//	{
+//		s64 temp = handle_expr();
+//		printout("handle_expr():  plus in part 2:  ", ret, ", ", temp, 
+//			"\n");
+//		ret += temp;
+//	}
+//	else if (next_tok() == &Tok::Minus)
+//	{
+//		s64 temp = handle_expr();
+//		printout("handle_expr():  minus in part 2:  ", ret, ", ", temp, 
+//			"\n");
+//		ret += temp;
+//	}
+//
+//	
+//	//if (old_next_tok == &Tok::Plus)
+//	//{
+//	//}
+//	//else if (old_next_tok == &Tok::Minus)
+//	//{
+//	//	ret = -ret;
+//	//}
+//
+//	return ret;
+//}
+
+//s64 RealMain::handle_term()
+//{
+//	s64 ret = handle_factor();
+//
+//	//const auto old_next_tok = next_tok();
+//
+//	//if ((old_next_tok == &Tok::Mult) || (old_next_tok == &Tok::Div))
+//	//{
+//	//	lex();
+//
+//	//	if (old_next_tok == &Tok::Mult)
+//	//	{
+//	//		ret *= handle_factor();
+//	//	}
+//	//	else // if (old_next_tok == &Tok::Div)
+//	//	{
+//	//		ret /= handle_factor();
+//	//	}
+//	//}
+//
+//	return ret;
+//}
+//
+//s64 RealMain::handle_factor()
+//{
+//	if (next_tok() == &Tok::Number)
+//	{
+//		printout("handle_factor() 1:  ", next_tok()->str(), "\n");
+//		s64 ret = next_num();
+//		lex();
+//		printout("handle_factor() 2:  ", next_tok()->str(), "\n");
+//		return ret;
+//	}
+//
+//	s64 ret;
+//
+//	printout("handle_factor() 3:  ", next_tok()->str(), "\n");
+//	need(&Tok::LParen);
+//
+//	printout("handle_factor() 4:  ", next_tok()->str(), "\n");
+//	ret = handle_expr();
+//
+//	printout("handle_factor() 5:  ", next_tok()->str(), "\n");
+//	need(&Tok::RParen);
+//
+//	return ret;
+//}
+//
+//s64 RealMain::handle_expr()
+//{
+//	const auto old_next_tok = next_tok();
+//	printout("handle_expr() 1:  ", next_tok()->str(), "\n");
+//	if ((old_next_tok == &Tok::Plus) || (old_next_tok == &Tok::Minus))
+//	{
+//		lex();
+//	}
+//	printout("handle_expr() 2:  ", next_tok()->str(), "\n");
+//
+//	s64 ret = handle_term();
+//	printout("handle_expr() 3:  ", next_tok()->str(), "\n");
+//
+//	if (old_next_tok == &Tok::Minus)
+//	{
+//		ret = -ret;
+//	}
+//
+//
+//	while ((next_tok() == &Tok::Plus) || (next_tok() == &Tok::Minus))
+//	{
+//		lex();
+//		printout("handle_expr() 4:  ", next_tok()->str(), "\n");
+//		const auto curr_next_tok = next_tok();
+//
+//		if (curr_next_tok == &Tok::Plus)
+//		{
+//			ret += handle_term();
+//		}
+//		else // if (curr_next_tok == &Tok::Minus)
+//		{
+//			ret -= handle_term();
+//		}
+//		printout("handle_expr() 5:  ", next_tok()->str(), "\n");
+//	}
+//
+//	return ret;
+//
+//}
+
+s64 RealMain::handle_term()
+{
+	s64 ret = handle_factor();
+
+	const auto old_next_tok = next_tok();
+
+	if ((old_next_tok == &Tok::Mult) || (old_next_tok == &Tok::Div))
+	{
+		lex();
+
+		if (old_next_tok == &Tok::Mult)
+		{
+			ret *= handle_factor();
+		}
+		else // if (old_next_tok == &Tok::Div)
+		{
+			ret /= handle_factor();
+		}
+	}
+	
+	return ret;
+}
+
 s64 RealMain::handle_factor()
 {
+	if (next_tok() == &Tok::Number)
+	{
+		s64 ret = next_num();
+		lex();
+		return ret;
+	}
+
 	s64 ret;
 
 	need(&Tok::LParen);
@@ -377,57 +562,9 @@ s64 RealMain::handle_factor()
 
 s64 RealMain::handle_expr()
 {
-	s64 ret;
-
-
 	const auto old_next_tok = next_tok();
-	if ((old_next_tok == &Tok::Plus) || (old_next_tok == &Tok::Minus))
-	{
-		lex();
-	}
-
-	if (next_tok() == &Tok::Number)
-	{
-		ret = next_num();
-		lex();
-	}
-	else
-	{
-		ret = handle_factor();
-	}
-	
-	if (old_next_tok == &Tok::Minus)
-	{
-		ret = -ret;
-	}
-
-
-	if (next_tok() == &Tok::Plus)
-	{
-		s64 temp = handle_expr();
-		printout("handle_expr():  plus in part 2:  ", ret, ", ", temp, 
-			"\n");
-		ret += temp;
-	}
-	else if (next_tok() == &Tok::Minus)
-	{
-		s64 temp = handle_expr();
-		printout("handle_expr():  minus in part 2:  ", ret, ", ", temp, 
-			"\n");
-		ret += temp;
-	}
-
-	
-	//if (old_next_tok == &Tok::Plus)
-	//{
-	//}
-	//else if (old_next_tok == &Tok::Minus)
-	//{
-	//	ret = -ret;
-	//}
-
-	return ret;
 }
+
 
 void RealMain::handle_block_specifics(Block& to_insert)
 {
