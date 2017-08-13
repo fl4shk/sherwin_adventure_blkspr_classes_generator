@@ -104,9 +104,17 @@ private:		// functions
 	void handle_sprite();
 
 	template<typename MapThing>
-	void handle_shared(std::map<std::string, MapThing>& some_map,
-		MapThing& to_insert, const std::string& debug_thing)
+	void handle_block_or_sprite(std::map<std::string, MapThing>& some_map,
+		const std::string& debug_thing, 
+		void (RealMain::* func)(MapThing& to_insert))
 	{
+		set_found_set_name(false);
+
+		need(&Tok::LBrace);
+
+		MapThing to_insert;
+
+
 		while ((next_tok() != &Tok::RBrace) && (next_tok() != &Tok::Blank))
 		{
 			if (next_tok() == &Tok::SetName)
@@ -116,8 +124,25 @@ private:		// functions
 				handle_set_name(some_map, debug_thing, temp_name);
 				to_insert.name = std::move(temp_name);
 			}
+			else
+			{
+				((*this).*func)(to_insert);
+			}
+		}
+
+		need(&Tok::RBrace);
+
+		some_map[to_insert.name] = to_insert;
+
+
+		if (!found_set_name())
+		{
+			expected("an instance of \"set_name\"");
 		}
 	}
+
+	void handle_block_specifics(Block& to_insert);
+	void handle_sprite_specifics(Sprite& to_insert);
 
 	
 	

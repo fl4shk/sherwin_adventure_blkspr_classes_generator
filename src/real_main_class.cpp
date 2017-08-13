@@ -204,48 +204,28 @@ void RealMain::parse()
 
 void RealMain::handle_block()
 {
-	set_found_set_name(false);
+	handle_block_or_sprite(blk_map(), "block", 
+		&RealMain::handle_block_specifics);
 
-	need(&Tok::LBrace);
-
-	Block to_insert;
-
-
-	handle_shared(blk_map(), to_insert, "block");
-
-	need(&Tok::RBrace);
-
-	blk_map()[to_insert.name] = to_insert;
-
-
-	if (!found_set_name())
-	{
-		expected("an instance of \"set_name\"");
-	}
 }
 
 void RealMain::handle_sprite()
 {
-	set_found_set_name(false);
-
-	need(&Tok::LBrace);
-
-	Sprite to_insert;
-
-	handle_shared(spr_map(), to_insert, "sprite");
-
-	need(&Tok::RBrace);
-
-	spr_map()[to_insert.name] = to_insert;
-
-
-	if (!found_set_name())
-	{
-		expected("an instance of \"set_name\"");
-	}
+	handle_block_or_sprite(spr_map(), "sprite", 
+		&RealMain::handle_sprite_specifics);
 }
 
 
+void RealMain::handle_block_specifics(Block& to_insert)
+{
+	lex();
+	printout("handle_block_specifics()\n");
+}
+void RealMain::handle_sprite_specifics(Sprite& to_insert)
+{
+	lex();
+	printout("handle_sprite_specifics()\n");
+}
 
 bool RealMain::next_tok_is_punct() const
 {
