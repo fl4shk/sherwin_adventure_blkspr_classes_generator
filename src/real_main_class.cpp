@@ -563,6 +563,29 @@ s64 RealMain::handle_factor()
 s64 RealMain::handle_expr()
 {
 	const auto old_next_tok = next_tok();
+
+	s64 ret;
+
+	if ((old_next_tok == &Tok::Plus) || (old_next_tok == &Tok::Minus))
+	{
+		lex();
+
+		if (old_next_tok == &Tok::Plus)
+		{
+			ret = handle_term();
+		}
+		else // if (old_next_tok == &Tok::Minus)
+		{
+			ret = -handle_term();
+		}
+	}
+	else
+	{
+		ret = handle_term();
+	}
+
+	return ret;
+
 }
 
 
