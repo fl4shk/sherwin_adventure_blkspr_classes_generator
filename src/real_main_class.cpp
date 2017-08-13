@@ -216,6 +216,65 @@ void RealMain::handle_sprite()
 }
 
 
+
+void RealMain::handle_const(std::map<std::string, s64>& some_cmap)
+{
+	for (;;)
+	{
+		handle_const_contents(some_cmap);
+
+		lex();
+
+		if (next_tok() == &Tok::Semicolon)
+		{
+			break;
+		}
+		else if (next_tok() == &Tok::Comma)
+		{
+			continue;
+		}
+		else
+		{
+			expected("token of type \";\" or \",\"!");
+		}
+	}
+
+}
+
+void RealMain::handle_const_contents(std::map<std::string, s64>& some_cmap)
+{
+	lex();
+
+	std::string temp_name;
+
+	if (next_tok() == &Tok::Ident)
+	{
+		temp_name = sym_tbl().at(next_sym_str()).name();
+		lex();
+	}
+	else
+	{
+		expected(&Tok::Ident);
+	}
+
+	if (some_cmap.count(temp_name) != 0)
+	{
+		err("In one block or sprite, can't have more than one constant ",
+			"with the identifer \"", temp_name, "\"!");
+	}
+
+	need(&Tok::Equals);
+
+	if (next_tok() == &Tok::Number)
+	{
+		some_cmap[temp_name] = next_num();
+	}
+	else
+	{
+		expected(&Tok::Number);
+	}
+}
+
 void RealMain::handle_block_specifics(Block& to_insert)
 {
 	lex();
@@ -226,6 +285,8 @@ void RealMain::handle_sprite_specifics(Sprite& to_insert)
 	lex();
 	printout("handle_sprite_specifics()\n");
 }
+
+
 
 bool RealMain::next_tok_is_punct() const
 {

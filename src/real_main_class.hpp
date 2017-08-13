@@ -106,14 +106,13 @@ private:		// functions
 	template<typename MapThing>
 	void handle_block_or_sprite(std::map<std::string, MapThing>& some_map,
 		const std::string& debug_thing, 
-		void (RealMain::* func)(MapThing& to_insert))
+		void (RealMain::* extras_func)(MapThing& to_insert))
 	{
 		set_found_set_name(false);
 
 		need(&Tok::LBrace);
 
 		MapThing to_insert;
-
 
 		while ((next_tok() != &Tok::RBrace) && (next_tok() != &Tok::Blank))
 		{
@@ -124,9 +123,13 @@ private:		// functions
 				handle_set_name(some_map, debug_thing, temp_name);
 				to_insert.name = std::move(temp_name);
 			}
+			else if (next_tok() == &Tok::Const)
+			{
+				handle_const(to_insert.cmap);
+			}
 			else
 			{
-				((*this).*func)(to_insert);
+				((*this).*extras_func)(to_insert);
 			}
 		}
 
@@ -134,15 +137,12 @@ private:		// functions
 
 		some_map[to_insert.name] = to_insert;
 
-
 		if (!found_set_name())
 		{
 			expected("an instance of \"set_name\"");
 		}
 	}
 
-	void handle_block_specifics(Block& to_insert);
-	void handle_sprite_specifics(Sprite& to_insert);
 
 	
 	
@@ -183,6 +183,11 @@ private:		// functions
 
 	}
 
+	void handle_const(std::map<std::string, s64>& some_cmap);
+	void handle_const_contents(std::map<std::string, s64>& some_cmap);
+
+	void handle_block_specifics(Block& to_insert);
+	void handle_sprite_specifics(Sprite& to_insert);
 
 	bool next_tok_is_punct() const;
 
