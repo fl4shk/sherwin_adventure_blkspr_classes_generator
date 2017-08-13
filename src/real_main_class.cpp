@@ -584,6 +584,11 @@ s64 RealMain::handle_expr()
 		ret = handle_term();
 	}
 
+	if ((next_tok() == &Tok::Plus) || (next_tok() == &Tok::Minus))
+	{
+		ret += handle_expr();
+	}
+
 	return ret;
 
 }
