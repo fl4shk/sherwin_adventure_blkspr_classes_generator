@@ -395,6 +395,11 @@ s64 RealMain::handle_factor()
 
 	s64 ret;
 
+	if (next_tok() != &Tok::LParen)
+	{
+		expected("token of type \"Number\" or \"(\"!");
+	}
+
 	need(&Tok::LParen);
 
 	ret = handle_expr();
