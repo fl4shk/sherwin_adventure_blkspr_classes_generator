@@ -23,6 +23,16 @@
 
 #include "misc_includes.hpp"
 
+#define LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE) \
+/* "u32", etc. */ \
+VARNAME(SizeT) VALUE("size_t") \
+VARNAME(U32) VALUE("u32") \
+VARNAME(S32) VALUE("s32") \
+VARNAME(U16) VALUE("u16") \
+VARNAME(S16) VALUE("s16") \
+VARNAME(U8) VALUE("u8") \
+VARNAME(S8) VALUE("s8") \
+
 
 #define LIST_OF_IDENT_LIKE_TOKENS(VARNAME, VALUE) \
 /* "block" */ \
@@ -36,6 +46,8 @@ VARNAME(SetName) VALUE("set_name") \
 \
 /* "const" */ \
 VARNAME(Const) VALUE("const") \
+\
+LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
 
 
 #define LIST_OF_PUNCT_TOKENS(VARNAME, VALUE) \

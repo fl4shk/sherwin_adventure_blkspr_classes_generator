@@ -47,7 +47,11 @@ int RealMain::operator () ()
 
 		for (auto& citer : block_iter.second.cmap)
 		{
-			printout("\"", citer.first, "\" = ", citer.second, "\n");
+			//printout("\"", citer.first, "\" = ", citer.second, "\n");
+
+			citer.second.print_const_type();
+			printout( "\"", citer.first, "\" = ", citer.second.value,
+				"\n");
 		}
 	}
 
@@ -64,7 +68,9 @@ int RealMain::operator () ()
 
 		for (auto& citer : sprite_iter.second.cmap)
 		{
-			printout("\"", citer.first, "\" = ", citer.second, "\n");
+			citer.second.print_const_type();
+			printout(" \"", citer.first, "\" = ", citer.second.value, 
+				"\n");
 		}
 	}
 
@@ -251,11 +257,38 @@ void RealMain::handle_sprite()
 
 
 
-void RealMain::handle_const(std::map<std::string, s64>& some_cmap)
+void RealMain::handle_const(std::map<std::string, Constant>& some_cmap)
 {
+	lex();
+
+	ConstType some_const_type;
+
+	if (next_tok() == nullptr)
+	{
+	}
+
+
+	#define VARNAME(some_tok) \
+		else if (next_tok() == &Tok::some_tok) \
+		{ \
+			some_const_type = ConstType::some_tok; \
+		}
+	#define VALUE(some_str) 
+
+	LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
+
+	#undef VARNAME
+	#undef VALUE
+
+	else
+	{
+		expected("token of type \"size_t\", \"u32\", \"s32\", etc.!");
+	}
+	
+
 	for (;;)
 	{
-		handle_const_contents(some_cmap);
+		handle_const_contents(some_cmap, some_const_type);
 
 		lex();
 
@@ -276,7 +309,8 @@ void RealMain::handle_const(std::map<std::string, s64>& some_cmap)
 
 }
 
-void RealMain::handle_const_contents(std::map<std::string, s64>& some_cmap)
+void RealMain::handle_const_contents
+	(std::map<std::string, Constant>& some_cmap, ConstType some_const_type)
 {
 	lex();
 
@@ -302,7 +336,10 @@ void RealMain::handle_const_contents(std::map<std::string, s64>& some_cmap)
 
 	if (next_tok() == &Tok::Number)
 	{
-		some_cmap[temp_name] = next_num();
+		Constant to_insert;
+		to_insert.type = some_const_type;
+		to_insert.value = next_num();
+		some_cmap[temp_name] = to_insert;
 	}
 	else
 	{

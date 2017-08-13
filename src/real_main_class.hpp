@@ -31,12 +31,51 @@
 class RealMain
 {
 private:		// classes
+	enum class ConstType
+	{
+		#define VARNAME(some_tok) \
+			some_tok,
+
+		#define VALUE(some_str) 
+
+		LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
+
+		#undef VARNAME
+		#undef VALUE
+
+	};
+	class Constant
+	{
+	public:		// variables
+		ConstType type;
+		s64 value;
+
+	public:		// functions
+		inline void print_const_type()
+		{
+			switch(type)
+			{
+				#define VARNAME(some_tok) \
+					case ConstType::some_tok:
+				#define VALUE(some_str) \
+					printout(some_str); break;
+
+				LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
+
+				#undef VARNAME
+				#undef VALUE
+			}
+		}
+	};
+
+
+
 	class Block
 	{
 	public:		// variables
 		std::string name;
 
-		std::map<std::string, s64> cmap;
+		std::map<std::string, Constant> cmap;
 	};
 
 	class Sprite
@@ -44,7 +83,7 @@ private:		// classes
 	public:		// variables
 		std::string name;
 
-		std::map<std::string, s64> cmap;
+		std::map<std::string, Constant> cmap;
 	};
 
 private:		// variables
@@ -183,8 +222,9 @@ private:		// functions
 
 	}
 
-	void handle_const(std::map<std::string, s64>& some_cmap);
-	void handle_const_contents(std::map<std::string, s64>& some_cmap);
+	void handle_const(std::map<std::string, Constant>& some_cmap);
+	void handle_const_contents(std::map<std::string, Constant>& some_cmap,
+		ConstType some_const_type);
 
 	void handle_block_specifics(Block& to_insert);
 	void handle_sprite_specifics(Sprite& to_insert);
