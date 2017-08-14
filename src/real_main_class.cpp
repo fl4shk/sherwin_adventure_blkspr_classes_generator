@@ -26,7 +26,6 @@ RealMain::RealMain()
 
 int RealMain::operator () ()
 {
-	//while (next_char() != EOF)
 	advance();
 	lex();
 	while (next_tok() != &Tok::Blank)
@@ -40,20 +39,17 @@ int RealMain::operator () ()
 			block_iter.second.name, "\", \"", 
 			block_iter.second.filename_stuff, "\"\n");
 
-		if (block_iter.second.cmap.size() == 0)
+		if (block_iter.second.cvec.vec.size() == 0)
 		{
 			continue;
 		}
 
 		printout("And constants\n");
 
-		for (auto& citer : block_iter.second.cmap)
+		for (auto& citer : block_iter.second.cvec.vec)
 		{
-			//printout("\"", citer.first, "\" = ", citer.second, "\n");
-
-			citer.second.print_const_type();
-			printout( "\"", citer.first, "\" = ", citer.second.value,
-				"\n");
+			citer.print_const_type();
+			printout("\"", citer.name, "\" = ", citer.value, "\n");
 		}
 	}
 
@@ -62,19 +58,18 @@ int RealMain::operator () ()
 		printout("Sprite with name, filename_stuff:  \"", 
 			sprite_iter.second.name, "\", \"", 
 			sprite_iter.second.filename_stuff, "\"\n");
-		
-		if (sprite_iter.second.cmap.size() == 0)
+
+		if (sprite_iter.second.cvec.vec.size() == 0)
 		{
 			continue;
 		}
 
 		printout("And constants\n");
 
-		for (auto& citer : sprite_iter.second.cmap)
+		for (auto& citer : sprite_iter.second.cvec.vec)
 		{
-			citer.second.print_const_type();
-			printout(" \"", citer.first, "\" = ", citer.second.value, 
-				"\n");
+			citer.print_const_type();
+			printout("\"", citer.name, "\" = ", citer.value, "\n");
 		}
 	}
 
@@ -309,7 +304,7 @@ void RealMain::handle_sprite()
 
 
 
-void RealMain::handle_const(std::map<std::string, Constant>& some_cmap)
+void RealMain::handle_const(BlkSprBase& some_blkspr)
 {
 	lex();
 
@@ -341,7 +336,7 @@ void RealMain::handle_const(std::map<std::string, Constant>& some_cmap)
 	for (;;)
 	{
 		printout("handle_const():  ", next_tok()->str(), "\n");
-		handle_const_contents(some_cmap, some_const_type);
+		handle_const_contents(some_blkspr, some_const_type);
 
 		//lex();
 
@@ -364,8 +359,8 @@ void RealMain::handle_const(std::map<std::string, Constant>& some_cmap)
 
 }
 
-void RealMain::handle_const_contents
-	(std::map<std::string, Constant>& some_cmap, ConstType some_const_type)
+void RealMain::handle_const_contents(BlkSprBase& some_blkspr,
+	ConstType some_const_type)
 {
 	lex();
 
@@ -383,7 +378,8 @@ void RealMain::handle_const_contents
 
 	need(&Tok::Equals);
 
-	if (some_cmap.count(temp_name) != 0)
+	//if (some_cvec.count(temp_name) != 0)
+	if (some_blkspr.cvec.has_constant(temp_name))
 	{
 		err("In one block or sprite, can't have more than one constant ",
 			"with the identifer \"", temp_name, "\"!");
@@ -395,7 +391,7 @@ void RealMain::handle_const_contents
 	//	Constant to_insert;
 	//	to_insert.type = some_const_type;
 	//	to_insert.value = next_num();
-	//	some_cmap[temp_name] = to_insert;
+	//	some_cvec[temp_name] = to_insert;
 	//}
 	//else
 	//{
@@ -403,9 +399,10 @@ void RealMain::handle_const_contents
 	//}
 
 	Constant to_insert;
+	to_insert.name = temp_name;
 	to_insert.type = some_const_type;
 	to_insert.value = handle_expr();
-	some_cmap[temp_name] = to_insert;
+	some_blkspr.cvec.vec.push_back(std::move(to_insert));
 }
 
 
@@ -508,7 +505,6 @@ void RealMain::handle_sprite_specifics(Sprite& to_insert)
 	lex();
 	printout("\t\t", line_num(), "\t\t");
 	printout(next_tok()->str(), "\n");
-
 }
 
 

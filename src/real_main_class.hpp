@@ -25,66 +25,12 @@
 
 
 #include "symbol_table_class.hpp"
-
+#include "blk_spr_base_stuff.hpp"
 
 
 class RealMain
 {
 private:		// classes
-	enum class ConstType
-	{
-		#define VARNAME(some_tok) \
-			some_tok,
-
-		#define VALUE(some_str) 
-
-		LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
-
-		#undef VARNAME
-		#undef VALUE
-
-	};
-	class Constant
-	{
-	public:		// variables
-		ConstType type;
-		s64 value;
-
-	public:		// functions
-		inline void print_const_type()
-		{
-			switch(type)
-			{
-				#define VARNAME(some_tok) \
-					case ConstType::some_tok:
-				#define VALUE(some_str) \
-					printout(some_str); break;
-
-				LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
-
-				#undef VARNAME
-				#undef VALUE
-			}
-		}
-	};
-
-
-
-	class Block
-	{
-	public:		// variables
-		std::string name, filename_stuff;
-
-		std::map<std::string, Constant> cmap;
-	};
-
-	class Sprite
-	{
-	public:		// variables
-		std::string name, filename_stuff;
-
-		std::map<std::string, Constant> cmap;
-	};
 
 private:		// variables
 	SymbolTable __sym_tbl;
@@ -173,7 +119,7 @@ private:		// functions
 			}
 			else if (next_tok() == &Tok::Const)
 			{
-				handle_const(to_insert.cmap);
+				handle_const(to_insert);
 			}
 			else
 			{
@@ -275,8 +221,11 @@ private:		// functions
 
 
 
-	void handle_const(std::map<std::string, Constant>& some_cmap);
-	void handle_const_contents(std::map<std::string, Constant>& some_cmap,
+	//void handle_const(std::vector<Constant>& some_cvec);
+	//void handle_const_contents(std::vector<Constant>& some_cvec,
+	//	ConstType some_const_type);
+	void handle_const(BlkSprBase& some_blkspr);
+	void handle_const_contents(BlkSprBase& some_blkspr,
 		ConstType some_const_type);
 
 	s64 handle_term();
