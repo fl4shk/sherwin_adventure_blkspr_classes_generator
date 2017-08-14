@@ -37,7 +37,7 @@ void Constant::print_const_type()
 }
 
 
-bool ConstVec::has_constant(const std::string& some_name, 
+bool ConstVec::contains(const std::string& some_name, 
 	size_t& ret_index) const
 {
 	for (ret_index=0; ret_index<vec.size(); ++ret_index)

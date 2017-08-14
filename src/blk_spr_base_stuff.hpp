@@ -76,12 +76,12 @@ public:		// variables
 	std::vector<Constant> vec;
 
 public:		// functions
-	inline bool has_constant(const std::string& some_name) const
+	inline bool contains(const std::string& some_name) const
 	{
 		size_t temp;
-		return has_constant(some_name, temp);
+		return contains(some_name, temp);
 	}
-	bool has_constant(const std::string& some_name, size_t& ret_index) 
+	bool contains(const std::string& some_name, size_t& ret_index) 
 		const;
 
 };

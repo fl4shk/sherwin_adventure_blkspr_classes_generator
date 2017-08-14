@@ -228,9 +228,9 @@ private:		// functions
 	void handle_const_contents(BlkSprBase& some_blkspr,
 		ConstType some_const_type);
 
-	s64 handle_term();
-	s64 handle_factor();
-	s64 handle_expr();
+	s64 handle_term(ConstVec& some_cvec);
+	s64 handle_factor(ConstVec& some_cvec);
+	s64 handle_expr(ConstVec& some_cvec);
 
 	void handle_block_specifics(Block& to_insert);
 	void handle_sprite_specifics(Sprite& to_insert);

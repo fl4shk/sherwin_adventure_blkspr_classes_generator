@@ -379,7 +379,7 @@ void RealMain::handle_const_contents(BlkSprBase& some_blkspr,
 	need(&Tok::Equals);
 
 	//if (some_cvec.count(temp_name) != 0)
-	if (some_blkspr.cvec.has_constant(temp_name))
+	if (some_blkspr.cvec.contains(temp_name))
 	{
 		err("In one block or sprite, can't have more than one constant ",
 			"with the identifer \"", temp_name, "\"!");
@@ -401,14 +401,14 @@ void RealMain::handle_const_contents(BlkSprBase& some_blkspr,
 	Constant to_insert;
 	to_insert.name = temp_name;
 	to_insert.type = some_const_type;
-	to_insert.value = handle_expr();
+	to_insert.value = handle_expr(some_blkspr.cvec);
 	some_blkspr.cvec.vec.push_back(std::move(to_insert));
 }
 
 
-s64 RealMain::handle_term()
+s64 RealMain::handle_term(ConstVec& some_cvec)
 {
-	s64 ret = handle_factor();
+	s64 ret = handle_factor(some_cvec);
 
 	const auto old_next_tok = next_tok();
 
@@ -418,18 +418,18 @@ s64 RealMain::handle_term()
 
 		if (old_next_tok == &Tok::Mult)
 		{
-			ret *= handle_factor();
+			ret *= handle_factor(some_cvec);
 		}
 		else // if (old_next_tok == &Tok::Div)
 		{
-			ret /= handle_factor();
+			ret /= handle_factor(some_cvec);
 		}
 	}
 	
 	return ret;
 }
 
-s64 RealMain::handle_factor()
+s64 RealMain::handle_factor(ConstVec& some_cvec)
 {
 	if (next_tok() == &Tok::Number)
 	{
@@ -447,14 +447,14 @@ s64 RealMain::handle_factor()
 
 	need(&Tok::LParen);
 
-	ret = handle_expr();
+	ret = handle_expr(some_cvec);
 
 	need(&Tok::RParen);
 
 	return ret;
 }
 
-s64 RealMain::handle_expr()
+s64 RealMain::handle_expr(ConstVec& some_cvec)
 {
 	const auto old_next_tok = next_tok();
 
@@ -466,21 +466,21 @@ s64 RealMain::handle_expr()
 
 		if (old_next_tok == &Tok::Plus)
 		{
-			ret = handle_term();
+			ret = handle_term(some_cvec);
 		}
 		else // if (old_next_tok == &Tok::Minus)
 		{
-			ret = -handle_term();
+			ret = -handle_term(some_cvec);
 		}
 	}
 	else
 	{
-		ret = handle_term();
+		ret = handle_term(some_cvec);
 	}
 
 	if ((next_tok() == &Tok::Plus) || (next_tok() == &Tok::Minus))
 	{
-		ret += handle_expr();
+		ret += handle_expr(some_cvec);
 	}
 
 	return ret;
