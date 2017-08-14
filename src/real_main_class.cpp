@@ -437,6 +437,21 @@ s64 RealMain::handle_factor(ConstVec& some_cvec)
 		lex();
 		return ret;
 	}
+	else if (next_tok() == &Tok::Ident)
+	{
+		size_t index;
+		if (some_cvec.contains(next_sym_str(), index))
+		{
+			s64 ret = some_cvec.vec.at(index).value;
+			lex();
+			return ret;
+		}
+		else
+		{
+			expected("existing constant of name \"", next_sym_str(),
+				"\"!");
+		}
+	}
 
 	s64 ret;
 
