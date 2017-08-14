@@ -176,6 +176,7 @@ void RealMain::lex()
 	if (next_char() == '0')
 	{
 		set_next_num(0);
+		set_next_tok(&Tok::NaturalNumber);
 
 		advance();
 
@@ -317,12 +318,12 @@ void RealMain::handle_const(BlkSprBase& some_blkspr)
 
 	for (;;)
 	{
-		printout("handle_const():  ", next_tok()->str(), "\n");
+		//printout("handle_const():  ", next_tok()->str(), "\n");
 		handle_const_contents(some_blkspr, some_const_type);
 
 		//lex();
 
-		printout("handle_const():  ", next_tok()->str(), "\n");
+		//printout("handle_const():  ", next_tok()->str(), "\n");
 
 		if (next_tok() == &Tok::Semicolon)
 		{
