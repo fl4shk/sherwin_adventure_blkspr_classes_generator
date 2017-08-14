@@ -410,10 +410,11 @@ s64 RealMain::handle_term(ConstVec& some_cvec)
 {
 	s64 ret = handle_factor(some_cvec);
 
-	const auto old_next_tok = next_tok();
+	//const auto old_next_tok = next_tok();
 
-	if ((old_next_tok == &Tok::Mult) || (old_next_tok == &Tok::Div))
+	while ((next_tok() == &Tok::Mult) || (next_tok() == &Tok::Div))
 	{
+		const auto old_next_tok = next_tok();
 		lex();
 
 		if (old_next_tok == &Tok::Mult)
@@ -425,6 +426,15 @@ s64 RealMain::handle_term(ConstVec& some_cvec)
 			ret /= handle_factor(some_cvec);
 		}
 	}
+
+	//if (next_tok() == &Tok::Mult)
+	//{
+	//	ret *= handle_expr(some_cvec);
+	//}
+	//else if (next_tok() == &Tok::Div)
+	//{
+	//	ret /= handle_expr(some_cvec);
+	//}
 	
 	return ret;
 }
@@ -457,7 +467,7 @@ s64 RealMain::handle_factor(ConstVec& some_cvec)
 
 	if (next_tok() != &Tok::LParen)
 	{
-		expected("token of type \"Number\" or \"(\"!");
+		expected("token of type \"Number\" or \"Ident\" or \"(\"!");
 	}
 
 	need(&Tok::LParen);
