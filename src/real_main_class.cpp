@@ -49,7 +49,7 @@ int RealMain::operator () ()
 		for (auto& citer : block_iter.second.cvec.vec)
 		{
 			citer.print_const_type();
-			printout("\"", citer.name, "\" = ", citer.value, "\n");
+			printout(" \"", citer.name, "\" = ", citer.value, "\n");
 		}
 	}
 
@@ -69,7 +69,7 @@ int RealMain::operator () ()
 		for (auto& citer : sprite_iter.second.cvec.vec)
 		{
 			citer.print_const_type();
-			printout("\"", citer.name, "\" = ", citer.value, "\n");
+			printout(" \"", citer.name, "\" = ", citer.value, "\n");
 		}
 	}
 
