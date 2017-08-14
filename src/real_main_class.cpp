@@ -172,6 +172,19 @@ void RealMain::lex()
 		return;
 	}
 
+	// The constant 0
+	if (next_char() == '0')
+	{
+		set_next_num(0);
+
+		advance();
+
+		if (isdigit(next_char()))
+		{
+			expected("Natural number that does not start with 0!");
+		}
+	}
+
 	// Find a constant natural number
 	if (isdigit(next_char()))
 	{
@@ -189,7 +202,7 @@ void RealMain::lex()
 
 	}
 
-	// BitLsl
+	// BitShL
 	if (next_char() == '<')
 	{
 		advance();
@@ -197,7 +210,7 @@ void RealMain::lex()
 		if (next_char() == '<')
 		{
 			advance();
-			set_next_tok(&Tok::BitLsl);
+			set_next_tok(&Tok::BitShL);
 		}
 		else
 		{
@@ -207,7 +220,7 @@ void RealMain::lex()
 		return;
 	}
 
-	// BitLsr or BitAsr
+	// BitShR
 	if (next_char() == '>')
 	{
 		advance();
@@ -215,22 +228,13 @@ void RealMain::lex()
 		if (next_char() == '>')
 		{
 			advance();
-
-			if (next_char() == '>')
-			{
-				advance();
-				set_next_tok(&Tok::BitAsr);
-			}
-			else
-			{
-				set_next_tok(&Tok::BitLsr);
-			}
+			set_next_tok(&Tok::BitShR);
 		}
 		else
 		{
-			expected("\">>\" or \">>>\" but got \"", next_str, "\"!");
+			expected("\">>\" but got \"", next_str, "\"!");
 		}
-		
+
 		return;
 	}
 
@@ -407,8 +411,8 @@ s64 RealMain::handle_term(ConstVec& some_cvec)
 
 	while ((next_tok() == &Tok::Mult) || (next_tok() == &Tok::Div)
 		|| (next_tok() == &Tok::BitAnd) || (next_tok() == &Tok::BitOr)
-		|| (next_tok() == &Tok::BitXor) || (next_tok() == &Tok::BitLsl) 
-		|| (next_tok() == &Tok::BitLsr) || (next_tok() == &Tok::BitAsr))
+		|| (next_tok() == &Tok::BitXor) || (next_tok() == &Tok::BitShL) 
+		|| (next_tok() == &Tok::BitShR))
 	{
 		const auto old_next_tok = next_tok();
 		lex();
@@ -433,18 +437,11 @@ s64 RealMain::handle_term(ConstVec& some_cvec)
 		{
 			ret ^= handle_factor(some_cvec);
 		}
-		else if (old_next_tok == &Tok::BitLsl)
+		else if (old_next_tok == &Tok::BitShL)
 		{
 			ret <<= handle_factor(some_cvec);
 		}
-		else if (old_next_tok == &Tok::BitLsr)
-		{
-			u64 temp0 = ret, temp1;
-			temp1 = handle_factor(some_cvec);
-			temp0 >>= temp1;
-			ret = temp0;
-		}
-		else if (old_next_tok == &Tok::BitAsr)
+		else if (old_next_tok == &Tok::BitShR)
 		{
 			ret >>= handle_factor(some_cvec);
 		}
