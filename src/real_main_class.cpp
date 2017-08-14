@@ -410,9 +410,10 @@ s64 RealMain::handle_term(ConstVec& some_cvec)
 {
 	s64 ret = handle_factor(some_cvec);
 
-	//const auto old_next_tok = next_tok();
-
-	while ((next_tok() == &Tok::Mult) || (next_tok() == &Tok::Div))
+	while ((next_tok() == &Tok::Mult) || (next_tok() == &Tok::Div)
+		|| (next_tok() == &Tok::BitAnd) || (next_tok() == &Tok::BitOr)
+		|| (next_tok() == &Tok::BitXor) || (next_tok() == &Tok::BitLsl) 
+		|| (next_tok() == &Tok::BitLsr) || (next_tok() == &Tok::BitAsr))
 	{
 		const auto old_next_tok = next_tok();
 		lex();
@@ -421,21 +422,40 @@ s64 RealMain::handle_term(ConstVec& some_cvec)
 		{
 			ret *= handle_factor(some_cvec);
 		}
-		else // if (old_next_tok == &Tok::Div)
+		else if (old_next_tok == &Tok::Div)
 		{
 			ret /= handle_factor(some_cvec);
 		}
+		else if (old_next_tok == &Tok::BitAnd)
+		{
+			ret &= handle_factor(some_cvec);
+		}
+		else if (old_next_tok == &Tok::BitOr)
+		{
+			ret |= handle_factor(some_cvec);
+		}
+		else if (old_next_tok == &Tok::BitXor)
+		{
+			ret ^= handle_factor(some_cvec);
+		}
+		else if (old_next_tok == &Tok::BitLsl)
+		{
+			ret <<= handle_factor(some_cvec);
+		}
+		else if (old_next_tok == &Tok::BitLsr)
+		{
+			u64 temp0 = ret, temp1;
+			temp1 = handle_factor(some_cvec);
+			temp0 >>= temp1;
+			ret = temp0;
+		}
+		else if (old_next_tok == &Tok::BitAsr)
+		{
+			ret >>= handle_factor(some_cvec);
+		}
 	}
 
-	//if (next_tok() == &Tok::Mult)
-	//{
-	//	ret *= handle_expr(some_cvec);
-	//}
-	//else if (next_tok() == &Tok::Div)
-	//{
-	//	ret /= handle_expr(some_cvec);
-	//}
-	
+
 	return ret;
 }
 
