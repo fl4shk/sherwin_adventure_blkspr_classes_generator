@@ -24,14 +24,14 @@
 #include "misc_includes.hpp"
 
 #define LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE) \
-/* "u32", etc. */ \
-VARNAME(SizeT) VALUE("size_t") \
-VARNAME(U32) VALUE("u32") \
-VARNAME(S32) VALUE("s32") \
-VARNAME(U16) VALUE("u16") \
-VARNAME(S16) VALUE("s16") \
-VARNAME(U8) VALUE("u8") \
-VARNAME(S8) VALUE("s8") \
+/* "size_t", "u32", "s32", "u16", etc. */ \
+VARNAME(size_t) VALUE("size_t") \
+VARNAME(u32) VALUE("u32") \
+VARNAME(s32) VALUE("s32") \
+VARNAME(u16) VALUE("u16") \
+VARNAME(s16) VALUE("s16") \
+VARNAME(u8) VALUE("u8") \
+VARNAME(s8) VALUE("s8") \
 
 
 #define LIST_OF_IDENT_LIKE_TOKENS(VARNAME, VALUE) \
@@ -80,10 +80,9 @@ VARNAME(BitXor) VALUE("^") \
 VARNAME(BitNot) VALUE("~") \
 
 #define LIST_OF_MULTI_CHAR_OPERATOR_TOKESN(VARNAME, VALUE) \
-/* Logical shift left, Logical shift right, Arithmetic shift right */ \
-VARNAME(BitLsl) VALUE("<<") \
-VARNAME(BitLsr) VALUE(">>") \
-VARNAME(BitAsr) VALUE(">>>")
+/* Shift left, shift right */ \
+VARNAME(BitShL) VALUE("<<") \
+VARNAME(BitShR) VALUE(">>")
 
 #define LIST_OF_OPERATOR_TOKENS(VARNAME, VALUE) \
 LIST_OF_SINGLE_CHAR_OPERATOR_TOKENS(VARNAME, VALUE) \
@@ -95,7 +94,7 @@ LIST_OF_MULTI_CHAR_OPERATOR_TOKESN(VARNAME, VALUE)
 
 #define LIST_OF_EXTRA_KEYWORD_TOKENS(VARNAME, VALUE) \
 /* "Number", "Identifier" */ \
-VARNAME(Number) VALUE("Number") \
+VARNAME(NaturalNumber) VALUE("NaturalNumber") \
 VARNAME(Ident) VALUE("Identifier") \
 \
 /* "Blank" */ \

@@ -20,22 +20,66 @@
 
 #include "blk_spr_base_stuff.hpp"
 
-void Constant::print_const_type()
+#define CASE_VARNAME(some_tok) case ConstType::some_tok:
+
+s64 Constant::get_s64() const
 {
-	switch(type)
+	switch (type)
 	{
 		#define VARNAME(some_tok) \
-			case ConstType::some_tok:
-		#define VALUE(some_str) \
-			printout(some_str); break;
+			CASE_VARNAME(some_tok) \
+				return std::get<some_tok>(value);
+				break;
+
+
+		#define VALUE(some_str)
 
 		LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
 
 		#undef VARNAME
 		#undef VALUE
 	}
+
+	return 9001;
 }
 
+std::ostream& Constant::print_const_type(std::ostream& os) const
+{
+	switch (type)
+	{
+		#define VALUE(some_str) \
+			osprintout(os, some_str); \
+			break;
+
+		LIST_OF_CONST_TYPE_TOKENS(CASE_VARNAME, VALUE)
+
+		#undef VALUE
+	}
+
+	return os;
+}
+
+std::ostream& Constant::print_value(std::ostream& os) const
+{
+	switch (type)
+	{
+		#define VARNAME(some_tok) \
+			CASE_VARNAME(some_tok) \
+				osprintout(os, std::get<some_tok>(value)); \
+				break;
+
+		#define VALUE(some_str)
+
+		LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
+
+		#undef VARNAME
+		#undef VALUE
+	}
+
+	return os;
+}
+
+#undef CASE_VARNAME
 
 bool ConstVec::contains(const std::string& some_name, 
 	size_t& ret_index) const
@@ -49,5 +93,23 @@ bool ConstVec::contains(const std::string& some_name,
 	}
 
 	return false;
+}
+
+std::ostream& operator << (std::ostream& os, const ConstVec& to_print)
+{
+	if (to_print.vec.size() != 0)
+	{
+		printout("And constants\n");
+
+		for (auto& citer : to_print.vec)
+		{
+			citer.print_const_type(os);
+			osprintout(os, " \"", citer.name, "\" = ");
+			citer.print_value(os);
+			osprintout(os, "\n");
+		}
+	}
+
+	return os;
 }
 

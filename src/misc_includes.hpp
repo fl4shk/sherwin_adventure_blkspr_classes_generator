@@ -23,6 +23,7 @@
 
 #include <fstream>
 #include <map>
+#include <variant>
 
 
 #include "liborangepower_src/gen_getter_setter_defines.hpp"

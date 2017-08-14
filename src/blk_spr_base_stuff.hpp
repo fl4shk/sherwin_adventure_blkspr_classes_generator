@@ -28,23 +28,30 @@
 
 enum class ConstType
 {
-	#define VARNAME(some_tok) \
-		some_tok,
-
+	#define VARNAME(some_tok) some_tok,
 	#define VALUE(some_str) 
 
 	LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
 
+
+};
+
+
+
+class Constant
+{
+public:		// typedefs
+	typedef std::variant<LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE) 
+		nullptr_t> ValueType;
+
 	#undef VARNAME
 	#undef VALUE
 
-};
-class Constant
-{
 public:		// variables
 	std::string name;
 	ConstType type;
-	s64 value;
+	ValueType value;
+
 
 public:		// functions
 	inline Constant()
@@ -52,11 +59,11 @@ public:		// functions
 	}
 
 	inline Constant(const std::string& s_name, ConstType s_type,
-		s64 s_value) : name(s_name), type(s_type), value(s_value)
+		ValueType s_value) : name(s_name), type(s_type), value(s_value)
 	{
 	}
 	inline Constant(std::string&& s_name, ConstType s_type,
-		s64 s_value) : name(std::move(s_name)), type(s_type), 
+		ValueType s_value) : name(std::move(s_name)), type(s_type), 
 		value(s_value)
 	{
 	}
@@ -67,7 +74,10 @@ public:		// functions
 	Constant& operator = (const Constant& to_copy) = default;
 	Constant& operator = (Constant&& to_move) = default;
 
-	void print_const_type();
+	s64 get_s64() const;
+
+	std::ostream& print_const_type(std::ostream& os) const;
+	std::ostream& print_value(std::ostream& os) const;
 };
 
 class ConstVec
@@ -83,9 +93,11 @@ public:		// functions
 	}
 	bool contains(const std::string& some_name, size_t& ret_index) 
 		const;
+	
 
 };
 
+std::ostream& operator << (std::ostream& os, const ConstVec& to_print);
 
 class BlkSprBase
 {

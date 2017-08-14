@@ -39,18 +39,7 @@ int RealMain::operator () ()
 			block_iter.second.name, "\", \"", 
 			block_iter.second.filename_stuff, "\"\n");
 
-		if (block_iter.second.cvec.vec.size() == 0)
-		{
-			continue;
-		}
-
-		printout("And constants\n");
-
-		for (auto& citer : block_iter.second.cvec.vec)
-		{
-			citer.print_const_type();
-			printout(" \"", citer.name, "\" = ", citer.value, "\n");
-		}
+		printout(block_iter.second.cvec);
 	}
 
 	for (auto& sprite_iter : spr_map())
@@ -59,18 +48,7 @@ int RealMain::operator () ()
 			sprite_iter.second.name, "\", \"", 
 			sprite_iter.second.filename_stuff, "\"\n");
 
-		if (sprite_iter.second.cvec.vec.size() == 0)
-		{
-			continue;
-		}
-
-		printout("And constants\n");
-
-		for (auto& citer : sprite_iter.second.cvec.vec)
-		{
-			citer.print_const_type();
-			printout(" \"", citer.name, "\" = ", citer.value, "\n");
-		}
+		printout(sprite_iter.second.cvec);
 	}
 
 	return 0;
@@ -194,7 +172,7 @@ void RealMain::lex()
 		return;
 	}
 
-	// Find a constant number
+	// Find a constant natural number
 	if (isdigit(next_char()))
 	{
 		set_next_num(0);
@@ -205,7 +183,7 @@ void RealMain::lex()
 			advance();
 		} while (isdigit(next_char()));
 
-		set_next_tok(&Tok::Number);
+		set_next_tok(&Tok::NaturalNumber);
 
 		return;
 
@@ -386,7 +364,7 @@ void RealMain::handle_const_contents(BlkSprBase& some_blkspr,
 	}
 
 
-	//if (next_tok() == &Tok::Number)
+	//if (next_tok() == &Tok::NaturalNumber)
 	//{
 	//	Constant to_insert;
 	//	to_insert.type = some_const_type;
@@ -395,13 +373,30 @@ void RealMain::handle_const_contents(BlkSprBase& some_blkspr,
 	//}
 	//else
 	//{
-	//	expected(&Tok::Number);
+	//	expected(&Tok::NaturalNumber);
 	//}
 
 	Constant to_insert;
 	to_insert.name = temp_name;
 	to_insert.type = some_const_type;
-	to_insert.value = handle_expr(some_blkspr.cvec);
+	s64 temp = handle_expr(some_blkspr.cvec);
+
+	switch (to_insert.type)
+	{
+		#define VARNAME(some_tok) \
+			case ConstType::some_tok: \
+				to_insert.value = static_cast<some_tok>(temp); \
+				break;
+
+		#define VALUE(some_str)
+
+		LIST_OF_CONST_TYPE_TOKENS(VARNAME, VALUE)
+
+
+		#undef VARNAME
+		#undef VALUE
+	}
+
 	some_blkspr.cvec.vec.push_back(std::move(to_insert));
 }
 
@@ -461,7 +456,7 @@ s64 RealMain::handle_term(ConstVec& some_cvec)
 
 s64 RealMain::handle_factor(ConstVec& some_cvec)
 {
-	if (next_tok() == &Tok::Number)
+	if (next_tok() == &Tok::NaturalNumber)
 	{
 		s64 ret = next_num();
 		lex();
@@ -472,7 +467,7 @@ s64 RealMain::handle_factor(ConstVec& some_cvec)
 		size_t index;
 		if (some_cvec.contains(next_sym_str(), index))
 		{
-			s64 ret = some_cvec.vec.at(index).value;
+			s64 ret = some_cvec.vec.at(index).get_s64();
 			lex();
 			return ret;
 		}
@@ -487,7 +482,8 @@ s64 RealMain::handle_factor(ConstVec& some_cvec)
 
 	if (next_tok() != &Tok::LParen)
 	{
-		expected("token of type \"Number\" or \"Ident\" or \"(\"!");
+		expected("token of type \"NaturalNumber\" or \"Identifier\" or ",
+			"\"(\"!");
 	}
 
 	need(&Tok::LParen);
