@@ -39,32 +39,14 @@ public:		// functions
 	{
 	}
 	inline Symbol(std::string&& s_name, PTok s_token)
-		: __name(std::move(s_name)), __token(std::move(s_token))
+		: __name(std::move(s_name)), __token(s_token)
 	{
 	}
-	inline Symbol(const Symbol& to_copy)
-	{
-		*this = to_copy;
-	}
-	inline Symbol(Symbol&& to_move)
-	{
-		*this = std::move(to_move);
-	}
+	inline Symbol(const Symbol& to_copy) = default;
+	inline Symbol(Symbol&& to_move) = default;
 
-	inline Symbol& operator = (const Symbol& to_copy)
-	{
-		__name = to_copy.__name;
-		__token = to_copy.__token;
-
-		return *this;
-	}
-	inline Symbol& operator = (Symbol&& to_move)
-	{
-		__name = std::move(to_move.__name);
-		__token = to_move.__token;
-
-		return *this;
-	}
+	inline Symbol& operator = (const Symbol& to_copy) = default;
+	inline Symbol& operator = (Symbol&& to_move) = default;
 
 	gen_getter_by_con_ref(name)
 	gen_getter_by_con_ref(token)
